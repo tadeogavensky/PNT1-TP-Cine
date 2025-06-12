@@ -1,0 +1,61 @@
+﻿@using PNT1_TP_Cine.Models;
+@{
+    List<Pelicula> peliculas = ViewBag.Peliculas;
+}
+
+
+<section id="carousel" class="container py-4">
+    <div id="carouselPeliculas" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner rounded-4 overflow-hidden">
+            @for (int i = 0; i < peliculas.Count && i < 5; i++) // Limita a 5 slides
+            {
+                var peli = peliculas[i];
+                <div class="carousel-item @(i == 0 ? "active" : "")">
+                    <img src="@peli.Imagen" class="d-block w-100" alt="@peli.Titulo" style="object-fit: cover; height: 400px;">
+              
+                </div>
+            }
+        </div>
+        <button class="carousel-control-prev " type="button" data-bs-target="#carouselPeliculas" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon bg-black rounded-3 p-2 "></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselPeliculas" data-bs-slide="next">
+            <span class="carousel-control-next-icon bg-black rounded-3 p-2"></span>
+        </button>
+    </div>
+</section>
+
+<style>
+
+
+    .card:hover .card-body {
+        background-color: white;
+        transition: all 0.3s ease-in-out;
+       cursor: pointer;
+       color:black;
+    }
+</style>
+
+<section id="home" class="container py-5 text-white">
+    <h3 class="mb-4">PELÍCULAS EN CARTELERA</h3>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        @foreach (var peli in peliculas)
+        {
+            <a class="col" href="/pelicula/@peli.Titulo">
+
+                <div class="card h-100 bg-dark text-white rounded-5 position-relative">
+                    <img src="@peli.Imagen" class="card-img-top rounded-top-5" alt="Imagen de @peli.Titulo" />
+                    <div class="position-absolute bg-black opacity-75 top-0 m-2 p-2 rounded-5">@peli.Duracion min</div>
+
+                    <div class="card-body rounded-bottom-5">
+                        <h5 class="card-title text-uppercase">@peli.Titulo</h5>
+                        <p class="card-text">
+                            <small class="text-secondary">Estreno: @peli.FechaEstreno.ToShortDateString()</small>
+                        </p>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+</section>
