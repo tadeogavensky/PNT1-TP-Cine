@@ -1,5 +1,4 @@
 ﻿
-
 using Microsoft.EntityFrameworkCore;
 
 namespace PNT1_TP_Cine.Models
@@ -15,7 +14,7 @@ namespace PNT1_TP_Cine.Models
         public DbSet<Sala> Salas { get; set; } = null!;
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=PNT1_TP1_Cine;" +
+            optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=DESKTOP-PKM95E0\\MSSQLSERVER01;" +
                            " Integrated Security= true; TrustServerCertificate= true; Encrypt= true");
             base.OnConfiguring(optionsBuilder);
 
