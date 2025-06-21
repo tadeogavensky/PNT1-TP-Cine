@@ -1,0 +1,30 @@
+﻿@model PNT1_TP_Cine.Models.Ticket
+@{
+    var funcion = Model.Funcion;
+    var pelicula = funcion.Pelicula;
+    var sala = funcion.Sala;
+    var usuario = Model.Usuario;
+}
+
+<section class="container py-5 mt-5 text-white">
+    <h2 class="mb-4 text-uppercase fw-bold">Ticket generado</h2>
+
+    <div class="bg-dark bg-opacity-25 p-4 rounded-4 mb-4">
+        <p><strong>Número de ticket:</strong> @Model.Numero</p>
+        <p><strong>Fecha de compra:</strong> @Model.FechaCompra.ToString("dd/MM/yyyy HH:mm")</p>
+
+        <hr />
+
+        <p><strong>Usuario:</strong> @usuario.Nombre @usuario.Apellido (@usuario.Email)</p>
+
+        <hr />
+
+        <p><strong>Película:</strong> @pelicula.Titulo</p>
+        <p><strong>Fecha y hora:</strong> @funcion.FechaHora.ToString("dddd dd/MM/yyyy HH:mm", new System.Globalization.CultureInfo("es-AR"))</p>
+        <p><strong>Sala:</strong> @sala.Numero</p>
+        <p><strong>Entradas:</strong> @Model.NumeroAsientos</p>
+        <p><strong>Total pagado:</strong> $@Model.Precio</p>
+    </div>
+
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary text-uppercase fw-bold">Volver al inicio</a>
+</section>

@@ -1,23 +1,41 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PNT1_TP_Cine.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PNT1_TP_Cine.Controllers
 {
     public class PeliculasController : Controller
     {
-        private readonly Context _context;
+        Context context = new Context();
 
-        public PeliculasController(Context context)
+       
+        public IActionResult Detalle(string titulo)
         {
-            _context = context;
-        }
+            if (string.IsNullOrEmpty(titulo))
+            {
+                return NotFound("El título de la película no puede estar vacío.");
+            }
+            var pelicula = context.Peliculas
+                 .Include(p => p.Genero) 
+                 .FirstOrDefault(p => p.Titulo == titulo);
 
-        public IActionResult Index()
-        {
-            var peliculas = _context.Peliculas.ToList(); 
-            ViewBag.Peliculas = peliculas;
-            return View();
+            if (pelicula == null)
+            {
+                return NotFound($"No se encontró la película con el título: {titulo}.");
+            }
+
+            List<Funcion> funciones = context.Funciones
+                .Include(f => f.Sala)
+                .Where(f => f.PeliculaId == pelicula.Id)
+                .ToList();
+
+            ViewBag.Funciones = funciones;
+            ViewBag.Pelicula = pelicula;
+
+            return View(pelicula);
+
+
         }
 
 

@@ -1,0 +1,29 @@
+﻿@using PNT1_TP_Cine.Models;
+@{
+    var funcion = (Funcion)ViewBag.Funcion;
+    var cantidad = (int)ViewBag.Cantidad;
+    var precioUnitario = 1500M;
+    var total = cantidad * precioUnitario;
+}
+
+<section class="container py-5 mt-5 text-white">
+    <h2 class="mb-4">Confirmar compra</h2>
+
+    <div class="bg-dark bg-opacity-25 p-4 rounded-4 mb-4">
+        <p><strong>Película:</strong> @funcion.Pelicula.Titulo</p>
+        <p><strong>Fecha:</strong> @funcion.FechaHora.ToString("dddd dd/MM/yyyy HH:mm", new System.Globalization.CultureInfo("es-AR"))</p>
+        <p><strong>Sala:</strong> @funcion.Sala.Numero</p>
+        <p><strong>Cantidad de entradas:</strong> @cantidad</p>
+        <p><strong>Precio por entrada:</strong> $@precioUnitario</p>
+        <hr />
+        <p class="fw-bold fs-5">Total: $@total</p>
+    </div>
+
+    <form method="post" asp-action="ConfirmarCompra" asp-controller="Ticket">
+        <input type="hidden" name="funcionId" value="@funcion.Id" />
+        <input type="hidden" name="cantidad" value="@cantidad" />
+
+        <button type="submit" class="btn btn-success fw-bold text-uppercase px-4">Confirmar compra</button>
+        <a href="@Url.Action("Detalle", "Peliculas", new { titulo = funcion.Pelicula.Titulo })" class="btn btn-outline-light ms-3 text-uppercase">Cancelar</a>
+    </form>
+</section>
