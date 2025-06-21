@@ -1,16 +1,11 @@
-﻿@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger">@TempData["Error"]</div>
-}
+﻿
 @{
     ViewData["Title"] = "Panel de Administración";
     Layout = "~/Views/Shared/_Layout.cshtml";
    
 }
-
 <section id="home" class="container py-5 text-white">
     <h2 class="mb-4">@ViewData["Title"]</h2>
-
     <ul class="nav nav-tabs" id="cineTabs" role="tablist">
         <li class="nav-item"><button class="nav-link show active" data-bs-toggle="tab" data-bs-target="#funciones">Funciones</button></li>
         <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#peliculas">Películas</button></li>
@@ -175,7 +170,7 @@
     </div>
 </div>
 
-<!-- Modal de confirmación genérico -->
+<!-- Modal Para Confirmar que Vamos a eliminar un elemento -->
 <div class="modal fade" id="confirmarEliminarFuncionModal" tabindex="-1" aria-labelledby="confirmarEliminarFuncionModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content rounded-3 shadow">
@@ -197,36 +192,72 @@
     </div>
 </div>
 
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Mantener la pestaña activa
-            const triggerTabList = document.querySelectorAll('#cineTabs .nav-link');
-            triggerTabList.forEach(function (tab) {
-                tab.addEventListener('shown.bs.tab', function (event) {
-                    localStorage.setItem('activeTab', event.target.getAttribute('data-bs-target'));
+    <!-- Modal de Mensajes de Alerta -->
+    <div class="modal fade" id="mensajeModal" tabindex="-1" aria-labelledby="mensajeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" id="mensajeModalBody">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <!-- Acá va el mensaje dinámico -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Mantener la pestaña activa
+                const triggerTabList = document.querySelectorAll('#cineTabs .nav-link');
+                triggerTabList.forEach(function (tab) {
+                    tab.addEventListener('shown.bs.tab', function (event) {
+                        localStorage.setItem('activeTab', event.target.getAttribute('data-bs-target'));
+                    });
                 });
-            });
 
-            const activeTab = localStorage.getItem('activeTab');
-            if (activeTab) {
-                const tabToShow = document.querySelector(`button[data-bs-target="${activeTab}"]`);
-                if (tabToShow) {
-                    new bootstrap.Tab(tabToShow).show();
+                const activeTab = localStorage.getItem('activeTab');
+                if (activeTab) {
+                    const tabToShow = document.querySelector(`button[data-bs-target="${activeTab}"]`);
+                    if (tabToShow) {
+                        new bootstrap.Tab(tabToShow).show();
+                    }
                 }
-            }
 
-            // Pasar ID y acción al modal para que la confirmacion de eliminar use el customizado
-            var modal = document.getElementById('confirmarEliminarFuncionModal');
-            modal.addEventListener('show.bs.modal', function (event) {
-                var button = event.relatedTarget;
-                var id = button.getAttribute('data-funcion-id');
-                var accion = button.getAttribute('data-accion');
+                // Pasar ID y acción al modal de confirmación
+                var modal = document.getElementById('confirmarEliminarFuncionModal');
+                if (modal) {
+                    modal.addEventListener('show.bs.modal', function (event) {
+                        var button = event.relatedTarget;
+                        var id = button.getAttribute('data-funcion-id');
+                        var accion = button.getAttribute('data-accion');
 
-                document.getElementById('funcionIdAEliminar').value = id;
-                document.getElementById('formEliminarFuncion').action = accion;
+                        document.getElementById('funcionIdAEliminar').value = id;
+                        document.getElementById('formEliminarFuncion').action = accion;
+                    });
+                }
+
+                // Mostrar modal si hay mensaje o error
+                var mensaje = @Html.Raw(Json.Serialize(TempData["Mensaje"] ?? TempData["Error"]));
+                var hayMensaje = @((TempData["Mensaje"] != null || TempData["Error"] != null).ToString().ToLower());
+                var esError = @((TempData["Error"] != null).ToString().ToLower());
+
+                if (hayMensaje) {
+                    // Insertar mensaje
+                    document.getElementById('mensajeModalBody').textContent = mensaje;
+
+                    // Cambiar color del header según tipo
+                    var header = document.getElementById('mensajeModalHeader');
+                    if (esError) {
+                        header.classList.add('bg-danger', 'text-white');
+                    } else {
+                        header.classList.add('bg-success', 'text-white');
+                    }
+
+                    // Mostrar el modal
+                    var mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
+                    mensajeModal.show();
+                }
             });
-        });
-    </script>
-}
+        </script>
+    }
 

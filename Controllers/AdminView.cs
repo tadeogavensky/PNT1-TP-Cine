@@ -27,8 +27,8 @@ namespace PNT1_TP_Cine.Controllers
 
             return View();
         }
-        [HttpPost]
-        public IActionResult EliminarFuncion(int id)
+        [HttpPost] 
+        public IActionResult EliminarFuncion(int id) // Eliminar Funcion via ID c/checkeo
         {
             var funcion = context.Funciones.Find(id);
             if (funcion != null)
@@ -42,19 +42,21 @@ namespace PNT1_TP_Cine.Controllers
         [HttpPost]
         public IActionResult EliminarPelicula(int id)
         {
-            var tieneFunciones = context.Funciones.Any(f => f.PeliculaId == id);
-            if (tieneFunciones)
+            // Obtener todas las funciones asociadas a la película
+            var funciones = context.Funciones.Where(f => f.PeliculaId == id).ToList();
+
+            // Eliminar las funciones si existen
+            if (funciones.Any())
             {
-                TempData["Error"] = "No se puede eliminar la película porque tiene funciones asignadas.";
-                return RedirectToAction("Admin");
+                context.Funciones.RemoveRange(funciones);
             }
 
+            // Eliminar la película
             var pelicula = context.Peliculas.Find(id);
-            if (pelicula != null)
-            {
-                context.Peliculas.Remove(pelicula);
-                context.SaveChanges();
-            }
+            context.Peliculas.Remove(pelicula);
+            context.SaveChanges();
+
+            TempData["Mensaje"] = "La película y sus funciones han sido eliminadas.";
             return RedirectToAction("Admin");
         }
 
