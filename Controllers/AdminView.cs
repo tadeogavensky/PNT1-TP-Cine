@@ -11,10 +11,11 @@ namespace PNT1_TP_Cine.Controllers
         {
             List<Funcion> listaDeFunciones = context.Funciones.ToList(); // Listo las funciones
             ViewBag.Funciones = listaDeFunciones; // Mando la lista de funciones a la Vista
-
-            List<Pelicula> listaDePeliculas = context.Peliculas.ToList(); // Listo las peliculas
+             
+            List<Pelicula> listaDePeliculas = context.Peliculas // Listo las peliculas
+                .Include(p => p.Genero)  // Me agrega el Genero de la Pelicula en la lista creada
+                .ToList();
             ViewBag.Peliculas = listaDePeliculas; // Mando la lista de peliculas a la Vista
-
 
             List<Sala> listaDeSalas = context.Salas.ToList(); // Listo las salas
             ViewBag.Salas = listaDeSalas; // Mando la lista de salas a la Vista
@@ -81,12 +82,6 @@ namespace PNT1_TP_Cine.Controllers
         {
             var usuario = context.Usuarios.Include(u => u.Tickets).Include(u => u.Rol).FirstOrDefault(u => u.Id == id);
             if (usuario == null) return RedirectToAction("Admin");
-
-            if (usuario.Rol.Nombre.Equals("Admin"))
-            {
-                TempData["Error"] = "No se puede eliminar un administrador, debe hacerlo desde la Base De Datos";
-                return RedirectToAction("Admin");
-            }
 
             context.Usuarios.Remove(usuario);
             context.SaveChanges();

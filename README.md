@@ -1,5 +1,39 @@
 # PNT1-TP-Cine
 
+## RESETEO de la base de datos
+USE PNT1_TP1_Cine_test;
+GO
+
+-- 1. Deshabilitar restricciones de claves foráneas temporalmente
+ALTER TABLE Tickets NOCHECK CONSTRAINT ALL;
+ALTER TABLE Funciones NOCHECK CONSTRAINT ALL;
+ALTER TABLE Usuarios NOCHECK CONSTRAINT ALL;
+ALTER TABLE Peliculas NOCHECK CONSTRAINT ALL;
+
+-- 2. Borrar datos respetando el orden de dependencias
+DELETE FROM Tickets;
+DELETE FROM Funciones;
+DELETE FROM Usuarios;
+DELETE FROM Salas;
+DELETE FROM Peliculas;
+DELETE FROM Generos;
+DELETE FROM Roles;
+
+-- 3. Reseteo de IDENTITY (auto incremento)
+DBCC CHECKIDENT ('Tickets', RESEED, 0);
+DBCC CHECKIDENT ('Funciones', RESEED, 0);
+DBCC CHECKIDENT ('Usuarios', RESEED, 0);
+DBCC CHECKIDENT ('Salas', RESEED, 0);
+DBCC CHECKIDENT ('Peliculas', RESEED, 0);
+DBCC CHECKIDENT ('Generos', RESEED, 0);
+DBCC CHECKIDENT ('Roles', RESEED, 0);
+
+-- 4. Rehabilitar las restricciones de claves foráneas
+ALTER TABLE Tickets CHECK CONSTRAINT ALL;
+ALTER TABLE Funciones CHECK CONSTRAINT ALL;
+ALTER TABLE Usuarios CHECK CONSTRAINT ALL;
+ALTER TABLE Peliculas CHECK CONSTRAINT ALL;
+
 ## Dummy Data (INSERTS).
 
 INSERT INTO Roles (Nombre) VALUES
@@ -60,36 +94,3 @@ INSERT INTO Tickets (FechaCompra, FuncionId, Numero, NumeroAsientos, Precio, Usu
 ('2025-06-24 16:30:00', 5, 105, 2, 500.00, 4),
 ('2025-06-25 18:00:00', 6, 106, 3, 750.00, 2);
 
-## RESETEO de la base de datos
-USE PNT1_TP1_Cine_test;
-GO
-
--- 1. Deshabilitar restricciones de claves foráneas temporalmente
-ALTER TABLE Tickets NOCHECK CONSTRAINT ALL;
-ALTER TABLE Funciones NOCHECK CONSTRAINT ALL;
-ALTER TABLE Usuarios NOCHECK CONSTRAINT ALL;
-ALTER TABLE Peliculas NOCHECK CONSTRAINT ALL;
-
--- 2. Borrar datos respetando el orden de dependencias
-DELETE FROM Tickets;
-DELETE FROM Funciones;
-DELETE FROM Usuarios;
-DELETE FROM Salas;
-DELETE FROM Peliculas;
-DELETE FROM Generos;
-DELETE FROM Roles;
-
--- 3. Reseteo de IDENTITY (auto incremento)
-DBCC CHECKIDENT ('Tickets', RESEED, 0);
-DBCC CHECKIDENT ('Funciones', RESEED, 0);
-DBCC CHECKIDENT ('Usuarios', RESEED, 0);
-DBCC CHECKIDENT ('Salas', RESEED, 0);
-DBCC CHECKIDENT ('Peliculas', RESEED, 0);
-DBCC CHECKIDENT ('Generos', RESEED, 0);
-DBCC CHECKIDENT ('Roles', RESEED, 0);
-
--- 4. Rehabilitar las restricciones de claves foráneas
-ALTER TABLE Tickets CHECK CONSTRAINT ALL;
-ALTER TABLE Funciones CHECK CONSTRAINT ALL;
-ALTER TABLE Usuarios CHECK CONSTRAINT ALL;
-ALTER TABLE Peliculas CHECK CONSTRAINT ALL;

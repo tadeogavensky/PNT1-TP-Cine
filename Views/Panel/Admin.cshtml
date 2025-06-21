@@ -5,153 +5,161 @@
 @{
     ViewData["Title"] = "Panel de Administración";
     Layout = "~/Views/Shared/_Layout.cshtml";
-       
+
 }
 
 <section id="home" class="container py-5 text-white">
     <h2 class="mb-4">@ViewData["Title"]</h2>
 
-<ul class="nav nav-tabs" id="cineTabs" role="tablist">
-    <li class="nav-item"><button class="accept-policynav-link" data-bs-toggle="tab" data-bs-target="#funciones">Funciones</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#peliculas">Películas</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#salas">Salas</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="" #usuarios">Usuarios</button></li>
-</ul>
+    <ul class="nav nav-tabs" id="cineTabs" role="tablist">
+        <li class="nav-item"><button class="nav-link show active" data-bs-toggle="tab" data-bs-target="#funciones">Funciones</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#peliculas">Películas</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#salas">Salas</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#usuarios">Usuarios</button></li>
+    </ul>
 
-<div class="tab-content mt-3">
-    <!-- Funciones -->
-    <div class="tab-pane fade" id="funciones">
-        <h3>Funciones</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Película</th>
-                    <th>Fecha y Hora</th>
-                    <th>Sala</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var f in ViewBag.Funciones as List<PNT1_TP_Cine.Models.Funcion>)
-                {
+    <div class="tab-content mt-3">
+        <!-- Funciones -->
+        <div class="tab-pane fade show active" id="funciones">
+            <h3>Funciones</h3>
+            <table class="table table-dark table-responsive">
+                <thead>
                     <tr>
-                        <td>@f.Pelicula.Titulo</td>
-                        <td>@f.FechaHora</td>
-                        <td>@f.Sala.Numero</td>
-                        <td>
-                            <button type="button" class="btn btn-danger btn-sm"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#confirmarEliminarFuncionModal"
-                                    data-funcion-id="@f.Id"
-                                    data-accion="/Panel/EliminarFuncion">
-                                Eliminar
-                            </button>
-                        </td>
+                        <th>Película</th>
+                        <th>Fecha y Hora</th>
+                        <th>Sala</th>
+                        <th>Acciones</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @foreach (var f in ViewBag.Funciones as List<PNT1_TP_Cine.Models.Funcion>)
+                    {
+                        <tr>
+                            <td>@f.Pelicula.Titulo</td>
+                            <td>@f.FechaHora</td>
+                            <td>@f.Sala.Numero</td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm"
+                                data-bs-toggle="modal"
+                                data-bs-target="#confirmarEliminarFuncionModal"
+                                data-funcion-id="@f.Id"
+                                data-accion="/Panel/EliminarFuncion">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
-    <!-- Películas -->
-    <div class="tab-pane fade" id="peliculas">
-        <h3>Películas</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Título</th>
-                    <th>Duración</th>
-                    <th>Fecha de Estreno</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var p in ViewBag.Peliculas as List<PNT1_TP_Cine.Models.Pelicula>)
-                {
+        <!-- Películas -->
+        <div class="tab-pane fade" id="peliculas">
+            <h3>Películas</h3>
+            <table class="table table-dark table-responsive">
+                <thead>
                     <tr>
-                        <td>@p.Titulo</td>
-                        <td>@p.Duracion min</td>
-                        <td>@p.FechaEstreno.ToShortDateString()</td>
-                        <td>
-                            <button type="button" class="btn btn-danger btn-sm"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#confirmarEliminarFuncionModal"
-                                    data-funcion-id="@p.Id"
-                                    data-accion="/Panel/EliminarPelicula">
-                                Eliminar
-                            </button>
-                        </td>
+                        <th>Título</th>
+                        <th>Duración</th>
+                        <th>Fecha de Estreno</th>
+                        <th>Genero</th>
+                        <th>Imagen Promocional</th>
+                        <th>Acciones</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @foreach (var p in ViewBag.Peliculas as List<PNT1_TP_Cine.Models.Pelicula>)
+                    {
+                        <tr>
+                            <td>@p.Titulo</td>
+                            <td>@p.Duracion min</td>
+                            <td>@p.FechaEstreno.ToShortDateString()</td>
+                            <td>@p.Genero.Nombre</td>
+                            <td><img src="@p.Imagen" width="200"/></td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm"
+                                data-bs-toggle="modal"
+                                data-bs-target="#confirmarEliminarFuncionModal"
+                                data-funcion-id="@p.Id"
+                                data-accion="/Panel/EliminarPelicula">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
-    <!-- Salas -->
-    <div class="tab-pane fade" id="salas">
-        <h3>Salas</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Número</th>
-                    <th>Capacidad</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var s in ViewBag.Salas as List<PNT1_TP_Cine.Models.Sala>)
-                {
+        <!-- Salas -->
+        <div class="tab-pane fade" id="salas">
+            <h3>Salas</h3>
+            <table class="table table-dark table-responsive">
+                <thead>
                     <tr>
-                        <td>@s.Numero</td>
-                        <td>@s.Capacidad</td>
-                        <td>
-                            <button type="button" class="btn btn-danger btn-sm"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#confirmarEliminarFuncionModal"
-                                    data-funcion-id="@s.Id"
-                                    data-accion="/Panel/EliminarSala">
-                                Eliminar
-                            </button>
-                        </td>
+                        <th>Número</th>
+                        <th>Capacidad</th>
+                        <th>Acciones</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @foreach (var s in ViewBag.Salas as List<PNT1_TP_Cine.Models.Sala>)
+                    {
+                        <tr>
+                            <td>@s.Numero</td>
+                            <td>@s.Capacidad</td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm"
+                                data-bs-toggle="modal"
+                                data-bs-target="#confirmarEliminarFuncionModal"
+                                data-funcion-id="@s.Id"
+                                data-accion="/Panel/EliminarSala">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
-    <!-- Usuarios -->
-    <div class="tab-pane fade" id="usuarios">
-        <h3>Usuarios</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Email</th>
-                    <th>Rol</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var u in ViewBag.Usuarios as List<PNT1_TP_Cine.Models.Usuario>)
-                {
+        <!-- Usuarios -->
+        <div class="tab-pane fade" id="usuarios">
+            <h3>Usuarios</h3>
+            <table class="table table-dark table-responsive">
+                <thead>
                     <tr>
-                        <td>@u.Nombre</td>
-                        <td>@u.Apellido</td>
-                        <td>@u.Email</td>
-                        <td>@u.Rol.Nombre</td>
-                        <td>
-                            <button type="button" class="btn btn-danger btn-sm"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#confirmarEliminarFuncionModal"
-                                    data-funcion-id="@u.Id"
-                                    data-accion="/Panel/EliminarUsuario">
-                                Eliminar
-                            </button>
-                        </td>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
                     </tr>
-                }
-            </tbody>
+                </thead>
+                <tbody>
+                    @foreach (var u in ViewBag.Usuarios as List<PNT1_TP_Cine.Models.Usuario>)
+                    {
+                        var isAdmin = u.Rol.Nombre == "Admin"; // Si es admin lo destacamos con otro estilo
+                        <tr class="@(isAdmin ? "table-secondary" : "")">
+                            <td>@u.Nombre</td>
+                            <td>@u.Apellido</td>
+                            <td>@u.Email</td>
+                            <td>@u.Rol.Nombre</td>
+                            <td>
+                                @if (!isAdmin) // Si es Admin no se puede eliminar
+                                {
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#confirmarEliminarFuncionModal"
+                                            data-funcion-id="@u.Id"
+                                            data-accion="/Panel/EliminarUsuario">
+                                        Eliminar
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
         </table>
     </div>
 </div>
