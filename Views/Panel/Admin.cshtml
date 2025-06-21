@@ -5,7 +5,7 @@
 @{
     ViewData["Title"] = "Panel de Administración";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
+   
 }
 
 <section id="home" class="container py-5 text-white">
@@ -56,7 +56,7 @@
         <!-- Películas -->
         <div class="tab-pane fade" id="peliculas">
             <h3>Películas</h3>
-            <table class="table table-dark table-responsive">
+            <table class="table table-striped table-dark table-responsive">
                 <thead>
                     <tr>
                         <th>Título</th>
@@ -70,18 +70,18 @@
                 <tbody>
                     @foreach (var p in ViewBag.Peliculas as List<PNT1_TP_Cine.Models.Pelicula>)
                     {
-                        <tr>
+                        <tr style="vertical-align:middle;">
                             <td>@p.Titulo</td>
                             <td>@p.Duracion min</td>
                             <td>@p.FechaEstreno.ToShortDateString()</td>
                             <td>@p.Genero.Nombre</td>
-                            <td><img src="@p.Imagen" width="200"/></td>
+                            <td><img src="@p.Imagen" width="200" /></td>
                             <td>
                                 <button type="button" class="btn btn-danger btn-sm"
-                                data-bs-toggle="modal"
-                                data-bs-target="#confirmarEliminarFuncionModal"
-                                data-funcion-id="@p.Id"
-                                data-accion="/Panel/EliminarPelicula">
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#confirmarEliminarFuncionModal"
+                                        data-funcion-id="@p.Id"
+                                        data-accion="/Panel/EliminarPelicula">
                                     Eliminar
                                 </button>
                             </td>
@@ -94,7 +94,7 @@
         <!-- Salas -->
         <div class="tab-pane fade" id="salas">
             <h3>Salas</h3>
-            <table class="table table-dark table-responsive">
+            <table class="table table-striped table-dark table-responsive">
                 <thead>
                     <tr>
                         <th>Número</th>
@@ -126,7 +126,7 @@
         <!-- Usuarios -->
         <div class="tab-pane fade" id="usuarios">
             <h3>Usuarios</h3>
-            <table class="table table-dark table-responsive">
+            <table class="table table-striped table-dark table-responsive">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -138,15 +138,26 @@
                 </thead>
                 <tbody>
                     @foreach (var u in ViewBag.Usuarios as List<PNT1_TP_Cine.Models.Usuario>)
+                        // Cargo los usuarios y SI ES ADMIN se estila el color de texto diferente y se saca el boton de ELIMINAR
                     {
-                        var isAdmin = u.Rol.Nombre == "Admin"; // Si es admin lo destacamos con otro estilo
-                        <tr class="@(isAdmin ? "table-secondary" : "")">
-                            <td>@u.Nombre</td>
-                            <td>@u.Apellido</td>
-                            <td>@u.Email</td>
-                            <td>@u.Rol.Nombre</td>
+                        var isAdmin = u.Rol.Nombre == "Admin";
+                        <tr>
+                            @if (isAdmin)
+                            {
+                                <td class="text-danger">@u.Nombre</td>
+                                <td class="text-danger">@u.Apellido</td>
+                                <td class="text-danger">@u.Email</td>
+                                <td class="text-danger">@u.Rol.Nombre</td>
+                            }
+                            else
+                            {
+                                <td>@u.Nombre</td>
+                                <td>@u.Apellido</td>
+                                <td>@u.Email</td>
+                                <td>@u.Rol.Nombre</td>
+                            }
                             <td>
-                                @if (!isAdmin) // Si es Admin no se puede eliminar
+                                @if (!isAdmin)
                                 {
                                     <button type="button" class="btn btn-danger btn-sm"
                                             data-bs-toggle="modal"
