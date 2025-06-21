@@ -63,12 +63,13 @@ namespace PNT1_TP_Cine.Controllers
         [HttpPost]
         public IActionResult EliminarSala(int id)
         {
-            var tieneFunciones = context.Funciones.Any(f => f.SalaId == id);
-            if (tieneFunciones)
-            {
-                TempData["Error"] = "No se puede eliminar la sala porque tiene funciones asociadas.";
-                return RedirectToAction("Admin");
-            }
+            var tieneFunciones = context.Funciones.Where(f => f.SalaId == id).ToList();
+
+            // Eliminar las funciones si existen
+            if (tieneFunciones.Any())
+             {
+             context.Funciones.RemoveRange(tieneFunciones);
+              }
 
             var sala = context.Salas.Find(id);
             if (sala != null)
@@ -76,6 +77,25 @@ namespace PNT1_TP_Cine.Controllers
                 context.Salas.Remove(sala);
                 context.SaveChanges();
             }
+            TempData["Mensaje"] = "La sala y sus funciones han sido eliminadas.";
+            return RedirectToAction("Admin");
+
+
+            // Obtener todas las funciones asociadas a la sala
+            var funciones = context.Funciones.Where(f => f.SalaId == id).ToList();
+
+            // Eliminar las funciones si existen
+            if (funciones.Any())
+            {
+                context.Funciones.RemoveRange(funciones);
+            }
+
+            // Eliminar la película
+            var pelicula = context.Peliculas.Find(id);
+            context.Peliculas.Remove(pelicula);
+            context.SaveChanges();
+
+            TempData["Mensaje"] = "La película y sus funciones han sido eliminadas.";
             return RedirectToAction("Admin");
         }
 

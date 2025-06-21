@@ -178,7 +178,7 @@
                 <h5 class="modal-title" id="confirmarEliminarFuncionModalLabel">Confirmar eliminación</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body text-dark">
                 ¿Estás seguro que querés eliminar este registro?
             </div>
             <div class="modal-footer">
@@ -196,9 +196,15 @@
     <div class="modal fade" id="mensajeModal" tabindex="-1" aria-labelledby="mensajeModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-body" id="mensajeModalBody">
+                <div class="modal-header" id="mensajeModalHeader">
+                    <h5 class="modal-title" id="mensajeModalLabel">🎉 Operacion completa 🎉</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                    <!-- Acá va el mensaje dinámico -->
+                </div>
+                <div class="modal-body text-dark" id="mensajeModalBody">
+                    <!-- Mensaje de error -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -248,9 +254,11 @@
                     // Cambiar color del header según tipo
                     var header = document.getElementById('mensajeModalHeader');
                     if (esError) {
-                        header.classList.add('bg-danger', 'text-white');
+                        header.classList.add('bg-danger-subtle', 'text-black');
+                        document.getElementById('mensajeModalHeader').textContent = "Error";
                     } else {
                         header.classList.add('bg-success', 'text-white');
+                        document.getElementById('mensajeModalHeader').textContent = "Exito";
                     }
 
                     // Mostrar el modal
