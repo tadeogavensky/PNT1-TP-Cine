@@ -2,12 +2,10 @@
 
 ## Dummy Data for the Database.
 
--- Insert Roles
 INSERT INTO Roles (Nombre) VALUES
 ('Admin'),
 ('Cliente');
 
--- Insert Generos
 INSERT INTO Generos (Nombre) VALUES
 ('Acción'),
 ('Comedia'),
@@ -18,7 +16,6 @@ INSERT INTO Generos (Nombre) VALUES
 ('Animación'),
 ('Documental');
 
--- Insert Peliculas with TMDb poster URLs (500px wide)
 INSERT INTO Peliculas (Titulo, Duracion, FechaEstreno, GeneroId, Imagen, Sinopsis) VALUES
 ('The Great Adventure', 120, '2023-01-15', 1, 'https://fastly.picsum.photos/id/1/5000/3333.jpg?hmac=Asv2DU3rA_5D1xSe22xZK47WEAN0wjWeFOhzd13ujW4', 'A thrilling adventure movie.'),
 ('Laugh Out Loud', 90, '2023-03-01', 2, 'https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68', 'A hilarious comedy.'),
@@ -29,7 +26,6 @@ INSERT INTO Peliculas (Titulo, Duracion, FechaEstreno, GeneroId, Imagen, Sinopsi
 ('Animated Fun', 80, '2023-07-15', 7, 'https://fastly.picsum.photos/id/32/4032/3024.jpg?hmac=n7I3OdGszMIwuGcvplNthgBmAxvAZ3rNBBSuDFZaItQ', 'A family-friendly animated movie.'),
 ('The Real World', 95, '2023-08-05', 8, 'https://fastly.picsum.photos/id/35/2758/3622.jpg?hmac=xIB3RTEGJ59FEnaQOXoaDgwX_K6PHAg57R0b4t7tiX0', 'An insightful documentary.');
 
--- Insert Usuarios (all passwords 'password123')
 INSERT INTO Usuarios (Nombre, Apellido, Email, Contrasena, RolId) VALUES
 ('Juan', 'Perez', 'juan.perez@example.com', 'password123', 2),
 ('Maria', 'Lopez', 'maria.lopez@example.com', 'password123', 2),
@@ -38,7 +34,6 @@ INSERT INTO Usuarios (Nombre, Apellido, Email, Contrasena, RolId) VALUES
 ('Admin', 'User', 'admin@example.com', 'password123', 1),
 ('Super', 'Admin', 'superadmin@example.com', 'password123', 1);
 
--- Insert Salas
 INSERT INTO Salas (Numero, Capacidad) VALUES
 (1, 100),
 (2, 150),
@@ -47,7 +42,6 @@ INSERT INTO Salas (Numero, Capacidad) VALUES
 (5, 180),
 (6, 220);
 
--- Insert Funciones
 INSERT INTO Funciones (FechaHora, PeliculaId, SalaId) VALUES
 ('2025-07-01 18:00:00', 1, 1),
 ('2025-07-01 20:30:00', 2, 2),
@@ -58,7 +52,6 @@ INSERT INTO Funciones (FechaHora, PeliculaId, SalaId) VALUES
 ('2025-07-04 17:00:00', 7, 6),
 ('2025-07-04 19:30:00', 8, 2);
 
--- Insert Tickets
 INSERT INTO Tickets (FechaCompra, FuncionId, Numero, NumeroAsientos, Precio, UsuarioId) VALUES
 ('2025-06-20 10:00:00', 1, 101, 2, 500.00, 1),
 ('2025-06-21 11:30:00', 2, 102, 3, 750.00, 2),
