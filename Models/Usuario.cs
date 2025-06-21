@@ -27,10 +27,6 @@ namespace PNT1_TP_Cine.Models
         public Rol Rol { get; set; } = null!;
 
         public List<Ticket> Tickets { get; set; } = new List<Ticket>();
-
-
-
-
     }
 }
     

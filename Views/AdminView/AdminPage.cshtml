@@ -1,0 +1,143 @@
+﻿@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@{
+    ViewData["Title"] = "Panel de Administración";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<ul class="nav nav-tabs" id="cineTabs" role="tablist">
+    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#funciones">Funciones</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#peliculas">Películas</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#salas">Salas</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#usuarios">Usuarios</button></li>
+</ul>
+
+<div class="tab-content mt-3">
+    <!-- Funciones -->
+    <div class="tab-pane fade show active" id="funciones">
+        <h3>Funciones</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Película</th>
+                    <th>Fecha y Hora</th>
+                    <th>Sala</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var f in ViewBag.Funciones as List<PNT1_TP_Cine.Models.Funcion>)
+                {
+                    <tr>
+                        <td>@f.Pelicula.Titulo</td>
+                        <td>@f.FechaHora</td>
+                        <td>@f.Sala.Numero</td>
+                        <td>
+                            <form asp-action="EliminarFuncion" method="post" onsubmit="return confirm('¿Estás seguro de que querés eliminar esta función?');" style="display:inline">
+                                <input type="hidden" name="id" value="@f.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Películas -->
+    <div class="tab-pane fade" id="peliculas">
+        <h3>Películas</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Duración</th>
+                    <th>Fecha de Estreno</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in ViewBag.Peliculas as List<PNT1_TP_Cine.Models.Pelicula>)
+                {
+                    <tr>
+                        <td>@p.Titulo</td>
+                        <td>@p.Duracion min</td>
+                        <td>@p.FechaEstreno.ToShortDateString()</td>
+                        <td>
+                            <form asp-action="EliminarPelicula" method="post" onsubmit="return confirm('¿Estás seguro de que querés eliminar esta película?');"  style="display:inline">
+                                <input type="hidden" name="id" value="@p.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Salas -->
+    <div class="tab-pane fade" id="salas">
+        <h3>Salas</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Capacidad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in ViewBag.Salas as List<PNT1_TP_Cine.Models.Sala>)
+                {
+                    <tr>
+                        <td>@s.Numero</td>
+                        <td>@s.Capacidad</td>
+                        <td>
+                            <form asp-action="EliminarSala" method="post" onsubmit="return confirm('¿Estás seguro de que querés eliminar esta sala?');" style="display:inline">
+                                <input type="hidden" name="id" value="@s.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Usuarios -->
+    <div class="tab-pane fade" id="usuarios">
+        <h3>Usuarios</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var u in ViewBag.Usuarios as List<PNT1_TP_Cine.Models.Usuario>)
+                {
+                    <tr>
+                        <td>@u.Nombre</td>
+                        <td>@u.Apellido</td>
+                        <td>@u.Email</td>
+                        <td>@u.Rol.Nombre</td>
+                        <td>
+                            <form asp-action="EliminarUsuario" method="post" onsubmit="return confirm('¿Estás seguro de que querés eliminar este usuario?');" style="display:inline">
+                                <input type="hidden" name="id" value="@u.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
