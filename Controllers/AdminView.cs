@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Cryptography;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PNT1_TP_Cine.Models;
 
@@ -67,9 +68,9 @@ namespace PNT1_TP_Cine.Controllers
 
             // Eliminar las funciones si existen
             if (tieneFunciones.Any())
-             {
-             context.Funciones.RemoveRange(tieneFunciones);
-              }
+            {
+                context.Funciones.RemoveRange(tieneFunciones);
+            }
 
             var sala = context.Salas.Find(id);
             if (sala != null)
@@ -78,24 +79,6 @@ namespace PNT1_TP_Cine.Controllers
                 context.SaveChanges();
             }
             TempData["Mensaje"] = "La sala y sus funciones han sido eliminadas.";
-            return RedirectToAction("Admin");
-
-
-            // Obtener todas las funciones asociadas a la sala
-            var funciones = context.Funciones.Where(f => f.SalaId == id).ToList();
-
-            // Eliminar las funciones si existen
-            if (funciones.Any())
-            {
-                context.Funciones.RemoveRange(funciones);
-            }
-
-            // Eliminar la película
-            var pelicula = context.Peliculas.Find(id);
-            context.Peliculas.Remove(pelicula);
-            context.SaveChanges();
-
-            TempData["Mensaje"] = "La película y sus funciones han sido eliminadas.";
             return RedirectToAction("Admin");
         }
 
@@ -107,6 +90,19 @@ namespace PNT1_TP_Cine.Controllers
 
             context.Usuarios.Remove(usuario);
             context.SaveChanges();
+            return RedirectToAction("Admin");
+        }
+
+        [HttpPost]
+        public IActionResult ResetearPasswordUsuario(int id)
+        {
+            var usuario = context.Usuarios.FirstOrDefault(u => u.Id == id); // Busco el user por id
+            if (usuario == null) return RedirectToAction("Admin"); // Si no lo encuentro vuelvo a la vista
+
+            usuario.Contrasena = Convert.ToBase64String(RandomNumberGenerator.GetBytes(8)); // si existe, reseteo el pass
+            context.Usuarios.Update(usuario); // actualizo el pass en el user
+            context.SaveChanges(); // y guardo los cambios
+
             return RedirectToAction("Admin");
         }
     }
