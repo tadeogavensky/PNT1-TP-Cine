@@ -46,3 +46,25 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+
+/* Inactive tabs: 2px solid grey border */
+.nav-tabs .nav-link {
+    border: 10px solid grey !important;
+    color: white !important;
+    background-color: transparent !important;
+    margin-right: 4px;
+    border-bottom-color: grey !important; /* keep bottom border visible */
+}
+
+/* Active tab: customize border and background */
+.nav-tabs .nav-link.active {
+    border-color: grey grey white grey !important;
+    background-color: #0d6efd !important;
+    color: white !important;
+    border-bottom: 50px solid white !important; /* visually merge with tab content */
+}
+
+/* Tabs container bottom border */
+.nav-tabs {
+    border-bottom: 2px solid grey !important;
+}

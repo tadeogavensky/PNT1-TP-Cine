@@ -84,7 +84,7 @@ namespace PNT1_TP_Cine.Controllers
 
             if (usuario.Rol.Nombre.Equals("Admin"))
             {
-                TempData["Error"] = "No se puede eliminar un administrador";
+                TempData["Error"] = "No se puede eliminar un administrador, debe hacerlo desde la Base De Datos";
                 return RedirectToAction("Admin");
             }
 

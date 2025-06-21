@@ -5,15 +5,17 @@
 @{
     ViewData["Title"] = "Panel de Administración";
     Layout = "~/Views/Shared/_Layout.cshtml";
+       
 }
 
-<h2>@ViewData["Title"]</h2>
+<section id="home" class="container py-5 text-white">
+    <h2 class="mb-4">@ViewData["Title"]</h2>
 
 <ul class="nav nav-tabs" id="cineTabs" role="tablist">
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#funciones">Funciones</button></li>
+    <li class="nav-item"><button class="accept-policynav-link" data-bs-toggle="tab" data-bs-target="#funciones">Funciones</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#peliculas">Películas</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#salas">Salas</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#usuarios">Usuarios</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="" #usuarios">Usuarios</button></li>
 </ul>
 
 <div class="tab-content mt-3">
@@ -37,10 +39,13 @@
                         <td>@f.FechaHora</td>
                         <td>@f.Sala.Numero</td>
                         <td>
-                            <form asp-action="EliminarFuncion" method="post" onsubmit="return confirm('¿Estás seguro de que querés eliminar esta función?');" style="display:inline">
-                                <input type="hidden" name="id" value="@f.Id" />
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                            </form>
+                            <button type="button" class="btn btn-danger btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#confirmarEliminarFuncionModal"
+                                    data-funcion-id="@f.Id"
+                                    data-accion="/Panel/EliminarFuncion">
+                                Eliminar
+                            </button>
                         </td>
                     </tr>
                 }
@@ -68,10 +73,13 @@
                         <td>@p.Duracion min</td>
                         <td>@p.FechaEstreno.ToShortDateString()</td>
                         <td>
-                            <form asp-action="EliminarPelicula" method="post" onsubmit="return confirm('¿Estás seguro de que querés eliminar esta película?');"  style="display:inline">
-                                <input type="hidden" name="id" value="@p.Id" />
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                            </form>
+                            <button type="button" class="btn btn-danger btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#confirmarEliminarFuncionModal"
+                                    data-funcion-id="@p.Id"
+                                    data-accion="/Panel/EliminarPelicula">
+                                Eliminar
+                            </button>
                         </td>
                     </tr>
                 }
@@ -97,10 +105,13 @@
                         <td>@s.Numero</td>
                         <td>@s.Capacidad</td>
                         <td>
-                            <form asp-action="EliminarSala" method="post" onsubmit="return confirm('¿Estás seguro de que querés eliminar esta sala?');" style="display:inline">
-                                <input type="hidden" name="id" value="@s.Id" />
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                            </form>
+                            <button type="button" class="btn btn-danger btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#confirmarEliminarFuncionModal"
+                                    data-funcion-id="@s.Id"
+                                    data-accion="/Panel/EliminarSala">
+                                Eliminar
+                            </button>
                         </td>
                     </tr>
                 }
@@ -130,10 +141,13 @@
                         <td>@u.Email</td>
                         <td>@u.Rol.Nombre</td>
                         <td>
-                            <form asp-action="EliminarUsuario" method="post" onsubmit="return confirm('¿Estás seguro de que querés eliminar este usuario?');" style="display:inline">
-                                <input type="hidden" name="id" value="@u.Id" />
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                            </form>
+                            <button type="button" class="btn btn-danger btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#confirmarEliminarFuncionModal"
+                                    data-funcion-id="@u.Id"
+                                    data-accion="/Panel/EliminarUsuario">
+                                Eliminar
+                            </button>
                         </td>
                     </tr>
                 }
@@ -142,11 +156,32 @@
     </div>
 </div>
 
-<!-- Script en JS para mantener la pestaña cuando hay un refresh de la página -->
+<!-- Modal de confirmación genérico -->
+<div class="modal fade" id="confirmarEliminarFuncionModal" tabindex="-1" aria-labelledby="confirmarEliminarFuncionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-3 shadow">
+            <div class="modal-header bg-danger-subtle text-dark">
+                <h5 class="modal-title" id="confirmarEliminarFuncionModalLabel">Confirmar eliminación</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro que querés eliminar este registro?
+            </div>
+            <div class="modal-footer">
+                <form id="formEliminarFuncion" method="post">
+                    <input type="hidden" name="id" id="funcionIdAEliminar" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
-        // Guardar la pestaña activa
         document.addEventListener('DOMContentLoaded', function () {
+            // Mantener la pestaña activa
             const triggerTabList = document.querySelectorAll('#cineTabs .nav-link');
             triggerTabList.forEach(function (tab) {
                 tab.addEventListener('shown.bs.tab', function (event) {
@@ -154,7 +189,6 @@
                 });
             });
 
-            // Restaurar pestaña activa al recargar
             const activeTab = localStorage.getItem('activeTab');
             if (activeTab) {
                 const tabToShow = document.querySelector(`button[data-bs-target="${activeTab}"]`);
@@ -162,6 +196,18 @@
                     new bootstrap.Tab(tabToShow).show();
                 }
             }
+
+            // Pasar ID y acción al modal para que la confirmacion de eliminar use el customizado
+            var modal = document.getElementById('confirmarEliminarFuncionModal');
+            modal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var id = button.getAttribute('data-funcion-id');
+                var accion = button.getAttribute('data-accion');
+
+                document.getElementById('funcionIdAEliminar').value = id;
+                document.getElementById('formEliminarFuncion').action = accion;
+            });
         });
     </script>
 }
+
