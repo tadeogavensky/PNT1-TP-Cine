@@ -1,5 +1,4 @@
-﻿﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -12,10 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
 </head>
 <body style="font-family: 'Roboto', serif;">
-    <header class="bg-black text-white border-bottom border-white py-3 fixed top-0">
+    <header class="bg-black text-white border-bottom border-white py-3 position-fixed z-3 vw-100 mb-5 top-0">
         <div class="container d-flex justify-content-between align-items-center">
-
-
             <a class="text-center py-3 text-white text-decoration-none" href="/">
                 <h1 class="h-4 m-0" style="font-family: 'Roboto', serif; text-transform: uppercase; letter-spacing: 3px; font-size: 2rem;">
                     Cine Ateneo
@@ -27,7 +24,7 @@
                 var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
             }
 
-            <nav class="d-flex gap-4 text-uppercase fw-bold">
+            <nav class="d-flex gap-4 text-uppercase fw-bold d-none d-md-flex">
                 <a href="/Peliculas"
                    class="text-white text-decoration-none @(currentController == "Peliculas" ? "border-bottom border-white pb-1" : "")">
                     Películas
@@ -46,32 +43,77 @@
                 </a>
             </nav>
 
-
-            <a href="iniciar-sesion" class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm" ">
+            <a href="/iniciar-sesion" class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm">
                 Acceder
             </a>
-
-
         </div>
     </header>
 
-    <main role="main" class="py-5 mx-auto bg-black ">
-            @RenderBody()
+    <main role="main" class="py-5 mx-auto bg-black">
+        @RenderBody()
     </main>
 
-    <footer class="bg-black text-white border-top border-white py-4">
-        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center text-center text-md-start gap-3">
-
-            <div>
-                <h5 class="mb-0 text-uppercase" style="letter-spacing: 2px;">Cine Ateneo</h5>
-                <small class="text-secondary">&copy; 2025 - Todos los derechos reservados</small>
+    <footer class="bg-black text-white pt-5 border-top border-white">
+        <div class="container">
+            <div class="row row-cols-2 row-cols-md-5 text-uppercase fw-bold mb-4">
+                <div>
+                    <h6 class="mb-3">Cines</h6>
+                    <ul class="list-unstyled fw-normal text-white-50">
+                        <li><a href="#" class="text-white-50">Precios Vigentes</a></li>
+                        <li><a href="#" class="text-white-50">Formatos</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h6 class="mb-3">Promociones</h6>
+                    <ul class="list-unstyled fw-normal text-white-50">
+                        <li><a href="#" class="text-white-50">Promociones</a></li>
+                        <li><a href="#" class="text-white-50">Asociá tu cuenta YPF</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h6 class="mb-3">Ventas Corporativas</h6>
+                    <ul class="list-unstyled fw-normal text-white-50">
+                        <li><a href="#" class="text-white-50">Solicitar presupuestos</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h6 class="mb-3">Cumpleaños y Grupos</h6>
+                    <ul class="list-unstyled fw-normal text-white-50">
+                        <li><a href="#" class="text-white-50">Eventos Especiales</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h6 class="mb-3">Ayuda</h6>
+                    <ul class="list-unstyled fw-normal text-white-50">
+                        <li><a href="#" class="text-white-50">Preguntas Frecuentes</a></li>
+                        <li><a href="#" class="text-white-50">Términos y Condiciones</a></li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="d-flex flex-column flex-sm-row gap-3 text-uppercase fw-bold">
-                <a href="/Peliculas" class="text-white text-decoration-none">Películas</a>
-                <a href="/Promociones" class="text-white text-decoration-none">Promociones</a>
-                <a href="/Nosotros" class="text-white text-decoration-none">Nosotros</a>
-                <a href="/Home/Privacy" class="text-white text-decoration-none">Privacidad</a>
+            <div class="border-top border-secondary mt-3 py-4 px-3 px-md-5">
+                <div class="row text-white-50 gy-4">
+                    <div class="col-12 col-md-6 d-flex flex-column gap-2">
+                        <a href="#">Login</a>
+                        <a href="#">Contacto</a>
+                        <a href="#">Contacto Cine Fan</a>
+                        <a href="#">RRHH</a>
+                        <a href="#">Flix Media</a>
+                        <a href="#">Libro de quejas online</a>
+                    </div>
+
+                    <div class="col-12 col-md-6 d-flex flex-column gap-3">
+                        <small>
+                            Copyright © 2025 Cine Ateneo<br />
+                            Dirección General de Defensa y Protección al Consumidor: Para consultas y/o denuncias haga
+                            <a href="#" class="text-white text-decoration-underline">click aquí</a>
+                        </small>
+
+                        <a href="#" class="btn btn-light fw-bold text-uppercase rounded-4 px-4 py-3 align-self-start">
+                            Botón de arrepentimiento
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>
@@ -79,32 +121,33 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-        @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: lightgray;
+            font-size: small;
+        }
+
+        .nav-link.active {
+            background-color: #212529 !important;
+            color: white !important;
+        }
+
+        .nav-link:hover {
+            background-color: white !important;
+            color: black !important;
+        }
+
+        button.nav-link {
+            color: white;
+        }
+    </style>
 </body>
 </html>
-
-
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-    }
-
-    a {
-        text-decoration: none;
-    }
-
-    .nav-link.active {
-        background-color: #212529 !important;
-        color: white !important;
-    }
-
-    .nav-link:hover {
-        background-color: white !important;
-        color: black !important;
-    }
-
-    button.nav-link {
-        color: white;
-    }
-</style>
