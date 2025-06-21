@@ -10,9 +10,19 @@ namespace PNT1_TP_Cine.Controllers
         Context context = new Context();
         public IActionResult Admin()
         {
-            List<Funcion> listaDeFunciones = context.Funciones.ToList(); // Listo las funciones
+            List<Funcion> listaDeFunciones = context.Funciones.Include(f => f.Sala).ToList(); ; // Listo las funciones
             ViewBag.Funciones = listaDeFunciones; // Mando la lista de funciones a la Vista
-             
+
+            // Aca vamos a contar la cantidad de salas por cada funcion
+            var listaAuxDeFunciones = context.Funciones.ToList(); // Trae funciones a memoria
+
+            var salasConCantidad = context.Salas
+                .AsEnumerable() // Trae salas a memoria para poder usar LINQ en memoria
+                .Select(s => new {Sala = s,CantidadFunciones = listaAuxDeFunciones.Count(f => f.SalaId == s.Id) }).ToList(); // Ya en memoria
+
+            ViewBag.SalasConCantidad = salasConCantidad;
+
+
             List<Pelicula> listaDePeliculas = context.Peliculas // Listo las peliculas
                 .Include(p => p.Genero)  // Me agrega el Genero de la Pelicula en la lista creada
                 .ToList();

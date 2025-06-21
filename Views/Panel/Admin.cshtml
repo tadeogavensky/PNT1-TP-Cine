@@ -97,20 +97,25 @@
                         <tr>
                             <th>Número</th>
                             <th>Capacidad</th>
+                            <th>Cant. Funciones</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var s in ViewBag.Salas as List<PNT1_TP_Cine.Models.Sala>)
+                        @foreach (var item in ViewBag.SalasConCantidad)
                         {
+                            var sala = item.Sala;
+                            int cantidadFunciones = item.CantidadFunciones;
+
                             <tr>
-                                <td>@s.Numero</td>
-                                <td>@s.Capacidad</td>
+                                <td>@sala.Numero</td>
+                                <td>@sala.Capacidad</td>
+                                <td>@cantidadFunciones</td>
                                 <td>
                                     <button type="button" class="btn btn-danger btn-sm"
                                             data-bs-toggle="modal"
                                             data-bs-target="#confirmarEliminarFuncionModal"
-                                            data-funcion-id="@s.Id"
+                                            data-funcion-id="@sala.Id"
                                             data-accion="/Panel/EliminarSala">
                                         Eliminar
                                     </button>
