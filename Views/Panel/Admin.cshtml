@@ -10,7 +10,7 @@
 <h2>@ViewData["Title"]</h2>
 
 <ul class="nav nav-tabs" id="cineTabs" role="tablist">
-    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#funciones">Funciones</button></li>
+    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#funciones">Funciones</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#peliculas">Películas</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#salas">Salas</button></li>
     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#usuarios">Usuarios</button></li>
@@ -18,7 +18,7 @@
 
 <div class="tab-content mt-3">
     <!-- Funciones -->
-    <div class="tab-pane fade show active" id="funciones">
+    <div class="tab-pane fade" id="funciones">
         <h3>Funciones</h3>
         <table class="table">
             <thead>
@@ -141,3 +141,27 @@
         </table>
     </div>
 </div>
+
+<!-- Script en JS para mantener la pestaña cuando hay un refresh de la página -->
+@section Scripts {
+    <script>
+        // Guardar la pestaña activa
+        document.addEventListener('DOMContentLoaded', function () {
+            const triggerTabList = document.querySelectorAll('#cineTabs .nav-link');
+            triggerTabList.forEach(function (tab) {
+                tab.addEventListener('shown.bs.tab', function (event) {
+                    localStorage.setItem('activeTab', event.target.getAttribute('data-bs-target'));
+                });
+            });
+
+            // Restaurar pestaña activa al recargar
+            const activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                const tabToShow = document.querySelector(`button[data-bs-target="${activeTab}"]`);
+                if (tabToShow) {
+                    new bootstrap.Tab(tabToShow).show();
+                }
+            }
+        });
+    </script>
+}

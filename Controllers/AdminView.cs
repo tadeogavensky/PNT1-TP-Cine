@@ -4,10 +4,10 @@ using PNT1_TP_Cine.Models;
 
 namespace PNT1_TP_Cine.Controllers
 {
-    public class AdminView : Controller
+    public class Panel : Controller
     {
         Context context = new Context();
-        public IActionResult AdminPage()
+        public IActionResult Admin()
         {
             List<Funcion> listaDeFunciones = context.Funciones.ToList(); // Listo las funciones
             ViewBag.Funciones = listaDeFunciones; // Mando la lista de funciones a la Vista
@@ -35,7 +35,7 @@ namespace PNT1_TP_Cine.Controllers
                 context.Funciones.Remove(funcion);
                 context.SaveChanges();
             }
-            return RedirectToAction("AdminPage");
+            return RedirectToAction("Admin");
         }
 
         [HttpPost]
@@ -45,7 +45,7 @@ namespace PNT1_TP_Cine.Controllers
             if (tieneFunciones)
             {
                 TempData["Error"] = "No se puede eliminar la película porque tiene funciones asignadas.";
-                return RedirectToAction("AdminPage");
+                return RedirectToAction("Admin");
             }
 
             var pelicula = context.Peliculas.Find(id);
@@ -54,7 +54,7 @@ namespace PNT1_TP_Cine.Controllers
                 context.Peliculas.Remove(pelicula);
                 context.SaveChanges();
             }
-            return RedirectToAction("AdminPage");
+            return RedirectToAction("Admin");
         }
 
         [HttpPost]
@@ -64,7 +64,7 @@ namespace PNT1_TP_Cine.Controllers
             if (tieneFunciones)
             {
                 TempData["Error"] = "No se puede eliminar la sala porque tiene funciones asociadas.";
-                return RedirectToAction("AdminPage");
+                return RedirectToAction("Admin");
             }
 
             var sala = context.Salas.Find(id);
@@ -73,24 +73,24 @@ namespace PNT1_TP_Cine.Controllers
                 context.Salas.Remove(sala);
                 context.SaveChanges();
             }
-            return RedirectToAction("AdminPage");
+            return RedirectToAction("Admin");
         }
 
         [HttpPost]
         public IActionResult EliminarUsuario(int id)
         {
-            var usuario = context.Usuarios.Include(u => u.Tickets).FirstOrDefault(u => u.Id == id);
-            if (usuario == null) return RedirectToAction("AdminPage");
+            var usuario = context.Usuarios.Include(u => u.Tickets).Include(u => u.Rol).FirstOrDefault(u => u.Id == id);
+            if (usuario == null) return RedirectToAction("Admin");
 
-            if (usuario.Tickets.Any())
+            if (usuario.Rol.Nombre.Equals("Admin"))
             {
-                TempData["Error"] = "No se puede eliminar el usuario porque tiene tickets comprados.";
-                return RedirectToAction("AdminPage");
+                TempData["Error"] = "No se puede eliminar un administrador";
+                return RedirectToAction("Admin");
             }
 
             context.Usuarios.Remove(usuario);
             context.SaveChanges();
-            return RedirectToAction("AdminPage");
+            return RedirectToAction("Admin");
         }
     }
 }
