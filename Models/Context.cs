@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace PNT1_TP_Cine.Models
@@ -17,7 +18,7 @@ namespace PNT1_TP_Cine.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=PNT1_TP1_Cine;" +
+            optionsBuilder.UseSqlServer("Data Source=DESKTOP-PKM95E0\\MSSQLSERVER01;Initial Catalog=PNT1_TP1_Cine_test;" +
                            " Integrated Security= true; TrustServerCertificate= true; Encrypt= true");
             base.OnConfiguring(optionsBuilder);
 

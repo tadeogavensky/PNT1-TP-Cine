@@ -1,0 +1,343 @@
+﻿@{
+    ViewData["Title"] = "Panel de Administración";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section id="home" class="container py-5 text-white">
+    <h2 class="mb-4">@ViewData["Title"]</h2>
+    <ul class="nav nav-tabs" id="cineTabs" role="tablist">
+        <li class="nav-item"><button class="nav-link show active" data-bs-toggle="tab" data-bs-target="#funciones">Funciones</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#peliculas">Películas</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#salas">Salas</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#usuarios">Usuarios</button></li>
+    </ul>
+
+    <div class="tab-content mt-3">
+        <!-- Funciones -->
+        <div class="tab-pane fade show active" id="funciones">
+            <h3>Funciones</h3>
+            <div class="table-responsive">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th>Película</th>
+                            <th>Fecha y Hora</th>
+                            <th>Sala</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var f in ViewBag.Funciones as List<PNT1_TP_Cine.Models.Funcion>)
+                        {
+                            <tr>
+                                <td>@f.Pelicula.Titulo</td>
+                                <td>@f.FechaHora</td>
+                                <td>@f.Sala.Numero</td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#confirmarEliminarFuncionModal"
+                                            data-funcion-id="@f.Id"
+                                            data-accion="/Panel/EliminarFuncion">
+                                        Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-success btn-sm" style="width: 150px; margin-bottom:10px; margin-right: 3px">Crear</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Películas -->
+        <div class="tab-pane fade" id="peliculas">
+            <h3>Películas</h3>
+            <div class="table-responsive">
+                <table class="table table-striped table-dark">
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Duración</th>
+                            <th>Fecha de Estreno</th>
+                            <th>Genero</th>
+                            <th>Imagen Promocional</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in ViewBag.Peliculas as List<PNT1_TP_Cine.Models.Pelicula>)
+                        {
+                            <tr style="vertical-align:middle;">
+                                <td>@p.Titulo</td>
+                                <td>@p.Duracion min</td>
+                                <td>@p.FechaEstreno.ToShortDateString()</td>
+                                <td>@p.Genero.Nombre</td>
+                                <td><img src="@p.Imagen" width="200" /></td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#confirmarEliminarFuncionModal"
+                                            data-funcion-id="@p.Id"
+                                            data-accion="/Panel/EliminarPelicula">
+                                        Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-success btn-sm" style="width: 150px; margin-bottom:10px; margin-right: 3px">Crear</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Salas -->
+        <div class="tab-pane fade" id="salas">
+            <h3>Salas</h3>
+            <div class="table-responsive">
+                <table class="table table-striped table-dark">
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Capacidad</th>
+                            <th>Cant. Funciones</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.SalasConCantidad)
+                        {
+                            var sala = item.Sala;
+                            int cantidadFunciones = item.CantidadFunciones;
+
+                            <tr>
+                                <td>@sala.Numero</td>
+                                <td>@sala.Capacidad</td>
+                                <td>@cantidadFunciones</td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-sm"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#confirmarEliminarFuncionModal"
+                                            data-funcion-id="@sala.Id"
+                                            data-accion="/Panel/EliminarSala">
+                                        Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-success btn-sm" style="width: 150px; margin-bottom:10px; margin-right: 3px">Crear</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Usuarios -->
+        <div class="tab-pane fade" id="usuarios">
+            <h3>Usuarios</h3>
+            <div class="table-responsive">
+                <table class="table table-striped table-dark">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Email</th>
+                            <th>Rol</th>
+                            <th>Actualizar</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var u in ViewBag.Usuarios as List<PNT1_TP_Cine.Models.Usuario>)
+                        // Cargo los usuarios y SI ES ADMIN se estila el color de texto diferente y se saca el boton de ELIMINAR
+                        {
+                            var isAdmin = u.Rol.Nombre == "Admin";
+                            <tr>
+                                @if (isAdmin)
+                                {
+                                    <td class="text-danger">@u.Nombre</td>
+                                    <td class="text-danger">@u.Apellido</td>
+                                    <td class="text-danger">@u.Email</td>
+                                    <td class="text-danger">@u.Rol.Nombre</td>
+                                }
+                                else
+                                {
+                                    <td>@u.Nombre</td>
+                                    <td>@u.Apellido</td>
+                                    <td>@u.Email</td>
+                                    <td>@u.Rol.Nombre</td>
+                                }
+                                <td>
+                                    @if (!isAdmin)
+                                    {
+                                        <button type="button" class="btn btn-warning btn-sm d-flex justify-content-center align-items-center"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#confirmarActualizarFuncionModal"
+                                                data-funcion-id="@u.Id"
+                                                data-accion="/Panel/ResetearPasswordUsuario">
+                                            Reset
+                                        </button>
+                                    }
+                                </td>
+                                <td>
+                                    @if (!isAdmin)
+                                    {
+                                        <button type="button" class="btn btn-danger btn-sm d-flex justify-content-center align-items-center"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#confirmarEliminarFuncionModal"
+                                                data-funcion-id="@u.Id"
+                                                data-accion="/Panel/EliminarUsuario">
+                                            <b>X</b>
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-success btn-sm" style="width: 150px; margin-bottom:10px; margin-right: 3px">Crear</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal Para Confirmar que Vamos a eliminar un elemento -->
+<div class="modal fade" id="confirmarEliminarFuncionModal" tabindex="-1" aria-labelledby="confirmarEliminarFuncionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-3 shadow">
+            <div class="modal-header bg-danger-subtle text-dark">
+                <h5 class="modal-title" id="confirmarEliminarFuncionModalLabel">Confirmar eliminación</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body text-dark">
+                ¿Estás seguro que querés eliminar este registro?
+            </div>
+            <div class="modal-footer">
+                <form id="formEliminarRegistro" method="post">
+                    <input type="hidden" name="id" id="registroIdAEliminar" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Para Confirmar que Actualizamos un registro -->
+<div class="modal fade" id="confirmarActualizarFuncionModal" tabindex="-1" aria-labelledby="confirmarActualizarFuncionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-3 shadow">
+            <div class="modal-header bg-warning-subtle text-dark">
+                <h5 class="modal-title" id="confirmarActualizarFuncionModalLabel">Confirmar acción</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body text-dark">
+                ¿Estás seguro que querés modificar este registro?
+            </div>
+            <div class="modal-footer">
+                <form id="formActualizarRegistro" method="post">
+                    <input type="hidden" name="id" id="registroIdAActualizar" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning">Actualizar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Mensajes de Alerta -->
+<div class="modal fade" id="mensajeModal" tabindex="-1" aria-labelledby="mensajeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="mensajeModalHeader">
+                <h5 class="modal-title" id="mensajeModalLabel">🎉 Operacion completa 🎉</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body text-dark" id="mensajeModalBody">
+                <!-- Mensaje de error -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mantener la pestaña activa
+            const triggerTabList = document.querySelectorAll('#cineTabs .nav-link');
+            triggerTabList.forEach(function (tab) {
+                tab.addEventListener('shown.bs.tab', function (event) {
+                    localStorage.setItem('activeTab', event.target.getAttribute('data-bs-target'));
+                });
+            });
+
+            const activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                const tabToShow = document.querySelector(`button[data-bs-target="${activeTab}"]`);
+                if (tabToShow) {
+                    new bootstrap.Tab(tabToShow).show();
+                }
+            }
+
+            // Pasar ID y acción al modal de confirmación
+            var modalEliminar = document.getElementById('confirmarEliminarFuncionModal');
+            if (modalEliminar) {
+                modalEliminar.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget;
+                    var id = button.getAttribute('data-funcion-id');
+                    var accion = button.getAttribute('data-accion');
+
+                    document.getElementById('registroIdAEliminar').value = id;
+                    document.getElementById('formEliminarRegistro').action = accion;
+                });
+            }
+
+            // Pasar ID y acción al modal de Actualizacion
+            var modalActualizar = document.getElementById('confirmarActualizarFuncionModal');
+            if (modalActualizar) {
+                modalActualizar.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget;
+                    var id = button.getAttribute('data-funcion-id');
+                    var accion = button.getAttribute('data-accion');
+
+                    document.getElementById('registroIdAActualizar').value = id;
+                    document.getElementById('formActualizarRegistro').action = accion;
+                });
+            }
+
+            // Mostrar modal si hay mensaje o error
+            var mensaje = @Html.Raw(Json.Serialize(TempData["Mensaje"] ?? TempData["Error"]));
+            var hayMensaje = @((TempData["Mensaje"] != null || TempData["Error"] != null).ToString().ToLower());
+            var esError = @((TempData["Error"] != null).ToString().ToLower());
+
+            if (hayMensaje) {
+                // Insertar mensaje
+                document.getElementById('mensajeModalBody').textContent = mensaje;
+
+                // Cambiar color del header según tipo
+                var header = document.getElementById('mensajeModalHeader');
+                if (esError) {
+                    header.classList.add('bg-danger-subtle', 'text-black');
+                    document.getElementById('mensajeModalLabel').textContent = "Error";
+                } else {
+                    header.classList.add('bg-success', 'text-white');
+                    document.getElementById('mensajeModalLabel').textContent = "Éxito";
+                }
+
+                // Mostrar el modal
+                var mensajeModal = new bootstrap.Modal(document.getElementById('mensajeModal'));
+                mensajeModal.show();
+            }
+        });
+    </script>
+}
