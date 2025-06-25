@@ -16,12 +16,14 @@ namespace PNT1_TP_Cine.Models
         public DbSet<Genero> Generos { get; set; } = null!;
         public DbSet<Sala> Salas { get; set; } = null!;
 
+        // Función para configurar el contexto de la base de datos
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=DESKTOP-PKM95E0\\MSSQLSERVER01;Initial Catalog=PNT1_TP1_Cine_test;" +
+            optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=PNT1_TP1_Cine;" +
                            " Integrated Security= true; TrustServerCertificate= true; Encrypt= true");
-            base.OnConfiguring(optionsBuilder);
 
+            base.OnConfiguring(optionsBuilder);
         }
+
     }
 }
