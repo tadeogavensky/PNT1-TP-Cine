@@ -1,0 +1,33 @@
+﻿@using PNT1_TP_Cine.Models;
+@{
+    List<Pelicula> peliculas = ViewBag.Peliculas;
+}
+
+<section class="container py-5 my-5 text-white">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        @foreach (var pelicula in peliculas)
+        {
+            <div class="col">
+                <a href="@Url.Action("Detalle", "Peliculas", new { titulo = pelicula.Titulo })" class="text-decoration-none">
+
+                    <div class="card h-100 bg-dark text-white rounded-4 d-flex flex-column position-relative overflow-hidden">
+
+                        <div style="height: 300px; overflow: hidden;">
+                            <img src="@pelicula.Imagen" class="w-100 h-100 object-fit-cover rounded-top-4" alt="Imagen de @pelicula.Titulo" />
+                        </div>
+
+
+                        <div class="position-absolute bg-black opacity-75 top-0 m-2 p-2 rounded-4">@pelicula.Duracion min</div>
+
+                        <div class="card-body d-flex flex-column justify-content-between rounded-bottom-4">
+                            <h5 class="card-title text-uppercase">@pelicula.Titulo</h5>
+                            <p class="card-text">
+                                <small class="text-secondary">Estreno: @pelicula.FechaEstreno.ToShortDateString()</small>
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+    </section>
