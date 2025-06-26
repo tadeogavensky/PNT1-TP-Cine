@@ -25,16 +25,15 @@
             }
 
             <nav class="d-flex gap-4 text-uppercase fw-bold d-none d-md-flex">
-                <a href="/Peliculas"
-                   class="text-white text-decoration-none @(currentController == "Peliculas" ? "border-bottom border-white pb-1" : "")">
-                    Películas
-                </a>
+                <a asp-controller="Peliculas" asp-action="ProximosEstrenos">Próximos Estrenos</a>
                 <a href="/Promociones"
                    class="text-white text-decoration-none @(currentController == "Promociones" ? "border-bottom border-white pb-1" : "")">
                     Promociones
                 </a>
-                <a href="/Nosotros"
-                   class="text-white text-decoration-none @(currentController == "Nosotros" ? "border-bottom border-white pb-1" : "")">
+                <a href="#"
+                   class="text-white text-decoration-none @(currentController == "Nosotros" ? "border-bottom border-white pb-1" : "")"
+                   data-bs-toggle="modal"
+                   data-bs-target="#nosotrosModal">
                     Nosotros
                 </a>
                 <a href="/Panel/Admin"
@@ -42,12 +41,30 @@
                     Acceso Admin
                 </a>
             </nav>
-
             <a href="/iniciar-sesion" class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm">
                 Acceder
             </a>
         </div>
     </header>
+
+    <!-- Modal -->
+    <div class="modal fade" id="nosotrosModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title">QUIÉNES SOMOS</h5>
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            onclick="cerrarModal()"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Contenido...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Modal -->
 
     <main role="main" class="py-5 mx-auto bg-black">
         @RenderBody()
@@ -149,5 +166,20 @@
             color: white;
         }
     </style>
+    <script>
+        function cerrarModal() {
+          const modal = bootstrap.Modal.getInstance(document.getElementById('nosotrosModal'));
+          modal.hide();
+
+          document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+          document.body.classList.remove('modal-open');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+          document.querySelectorAll('.btn-close').forEach(btn => {
+            btn.addEventListener('click', cerrarModal);
+          });
+        });
+    </script>
 </body>
 </html>

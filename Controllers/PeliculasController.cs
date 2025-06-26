@@ -56,7 +56,17 @@ namespace PNT1_TP_Cine.Controllers
 
         }
 
+        [HttpGet("ProximosEstrenos")]
+        public IActionResult ProximosEstrenos()
+        {
+            // Filtra películas con fecha de estreno mayor a hoy
+            var proximosEstrenos = context.Peliculas
+                .Include(p => p.Genero)
+                .Where(p => p.FechaEstreno > DateTime.Now)
+                .OrderBy(p => p.FechaEstreno)  // Ordena por fecha más cercana
+                .ToList();
 
+            return View(proximosEstrenos);
+        }
     }
-
 }

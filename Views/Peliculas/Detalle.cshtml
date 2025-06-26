@@ -117,6 +117,10 @@
             else
             {
                 <p class="text-secondary">No hay funciones disponibles para esta película.</p>
+                    @if (pelicula.FechaEstreno > DateTime.Today)  
+                    {  
+                        <p class="text-secondary">Fecha de estreno: @pelicula.FechaEstreno.ToString("dd/MM/yyyy")</p>  
+                    }
             }
         </div>
     </div>
