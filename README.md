@@ -51,14 +51,14 @@ INSERT INTO Generos (Nombre) VALUES
 ('Documental');
 
 INSERT INTO Peliculas (Titulo, Duracion, FechaEstreno, GeneroId, Imagen, Sinopsis) VALUES
-('The Great Adventure', 120, '2023-01-15', 1, 'https://fastly.picsum.photos/id/1/5000/3333.jpg?hmac=Asv2DU3rA_5D1xSe22xZK47WEAN0wjWeFOhzd13ujW4', 'A thrilling adventure movie.'),
-('Laugh Out Loud', 90, '2023-03-01', 2, 'https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68', 'A hilarious comedy.'),
-('Deep Emotions', 110, '2023-02-10', 3, 'https://fastly.picsum.photos/id/22/4434/3729.jpg?hmac=fjZdkSMZJNFgsoDh8Qo5zdA_nSGUAWvKLyyqmEt2xs0', 'A touching drama film.'),
-('Future World', 130, '2023-04-20', 4, 'https://fastly.picsum.photos/id/21/3008/2008.jpg?hmac=T8DSVNvP-QldCew7WD4jj_S3mWwxZPqdF0CNPksSko4', 'A sci-fi journey to the future.'),
-('Night Terrors', 100, '2023-05-10', 5, 'https://fastly.picsum.photos/id/27/3264/1836.jpg?hmac=p3BVIgKKQpHhfGRRCbsi2MCAzw8mWBCayBsKxxtWO8g', 'A horror film that will keep you awake.'),
-('Love Forever', 115, '2023-06-01', 6, 'https://fastly.picsum.photos/id/30/1280/901.jpg?hmac=A_hpFyEavMBB7Dsmmp53kPXKmatwM05MUDatlWSgATE', 'A romantic story that melts hearts.'),
-('Animated Fun', 80, '2023-07-15', 7, 'https://fastly.picsum.photos/id/32/4032/3024.jpg?hmac=n7I3OdGszMIwuGcvplNthgBmAxvAZ3rNBBSuDFZaItQ', 'A family-friendly animated movie.'),
-('The Real World', 95, '2023-08-05', 8, 'https://fastly.picsum.photos/id/35/2758/3622.jpg?hmac=xIB3RTEGJ59FEnaQOXoaDgwX_K6PHAg57R0b4t7tiX0', 'An insightful documentary.');
+('The Great Adventure', 120, '2023-01-15', 1, 'https://image.tmdb.org/t/p/original/qJ2tW6WMUDux911r6m7haRef0WH.jpg', 'A thrilling adventure movie.'),               -- The Dark Knight (Adventure/Action)
+('Laugh Out Loud', 90, '2023-03-01', 2, 'https://image.tmdb.org/t/p/original/4Kbxg7NQbl77FkXCDB9QarsjG5b.jpg', 'A hilarious comedy.'),                        -- Superbad (Comedy)
+('Deep Emotions', 110, '2023-02-10', 3, 'https://image.tmdb.org/t/p/original/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg', 'A touching drama film.'),                     -- The Shawshank Redemption (Drama)
+('Future World', 130, '2023-04-20', 4, 'https://image.tmdb.org/t/p/original/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg', 'A sci-fi journey to the future.'),             -- Interstellar (Sci-Fi)
+('Night Terrors', 100, '2023-05-10', 5, 'https://image.tmdb.org/t/p/original/4GFPuL14eXi66V5LyDkXO32ruZY.jpg', 'A horror film that will keep you awake.'),     -- Hereditary (Horror)
+('Love Forever', 115, '2023-06-01', 6, 'https://image.tmdb.org/t/p/original/uDO8zWDhfWwoFdKS4fzkUJt0Rf0.jpg', 'A romantic story that melts hearts.'),          -- La La Land (Romance)
+('Animated Fun', 80, '2023-07-15', 7, 'https://image.tmdb.org/t/p/original/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg', 'A family-friendly animated movie.'),            -- Toy Story (Animation)
+('The Real World', 95, '2023-08-05', 8, 'https://image.tmdb.org/t/p/original/6j7UZ5gFP5BbEfbHuJdLVvLrQ6u.jpg', 'An insightful documentary.');                 -- The Social Dilemma (Documentary)
 
 INSERT INTO Usuarios (Nombre, Apellido, Email, Contrasena, RolId) VALUES
 ('Juan', 'Perez', 'juan.perez@example.com', 'password123', 2),
