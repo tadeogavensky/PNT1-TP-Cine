@@ -7,12 +7,17 @@ namespace PNT1_TP_Cine.Controllers
 {
     public class PeliculasController : Controller
     {
-        Context context = new Context();
+        //Context context = new Context();
+        private readonly Context _context;
 
-       public IActionResult Index()
+        public PeliculasController(Context context)
+        {
+            _context = context;
+        }
+        public IActionResult Index()
         {
             // Lista todas las peliculas con su genero
-            var peliculas = context.Peliculas
+            var peliculas = _context.Peliculas
                 .Include(p => p.Genero) 
                 .ToList();
 
@@ -31,7 +36,7 @@ namespace PNT1_TP_Cine.Controllers
             }
 
             // Busca la película por título 
-            var pelicula = context.Peliculas
+            var pelicula = _context.Peliculas
                  .Include(p => p.Genero) 
                  .FirstOrDefault(p => p.Titulo == titulo);
 
@@ -42,7 +47,7 @@ namespace PNT1_TP_Cine.Controllers
             }
 
             // Obtiene las funciones asociadas a la película
-            List<Funcion> funciones = context.Funciones
+            List<Funcion> funciones = _context.Funciones
                 .Include(f => f.Sala)
                 .Where(f => f.PeliculaId == pelicula.Id)
                 .ToList();

@@ -17,6 +17,7 @@ namespace PNT1_TP_Cine.Models
         [Required(ErrorMessage = "El nombre de usuario es obligatorio.")]
         public string Email { get; set; } = string.Empty;
 
+        [Display(Name = "Contraseña")]
         [Required(ErrorMessage = "La contraseña es obligatoria.")]
         [DataType(DataType.Password)]
         public string Contrasena { get; set; } = string.Empty;

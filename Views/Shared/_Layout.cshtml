@@ -42,10 +42,25 @@
                     Acceso Admin
                 </a>
             </nav>
-
+            @*
             <a href="/iniciar-sesion" class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm">
                 Acceder
             </a>
+            *@
+            @* Botón que redirige a la vista de inicio de sesión del controlador Account *@
+            <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
+               asp-controller="Account" asp-action="Login">
+                Iniciar sesión
+            </a>
+            
+            @* Botón que redirige al formulario de registro de nuevos usuarios *@
+            <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
+               asp-controller="Account" asp-action="Register">
+                Registrarse
+            </a>
+
+
+
         </div>
     </header>
 
@@ -148,6 +163,13 @@
         button.nav-link {
             color: white;
         }
+
+
+        label {
+            color: #f8f9fa;
+            font-weight: 600;
+        }
+
     </style>
 </body>
 </html>

@@ -8,13 +8,18 @@ namespace PNT1_TP_Cine.Controllers
     [Authorize]
     public class TicketController : Controller
     {
-        Context context = new Context();
+        //Context context = new Context();
+        private readonly Context _context;
 
+        public TicketController(Context context)
+        {
+            _context = context;
+        }
 
         // Metodo para obtener una función por id
         private Funcion? ObtenerFuncionConDatos(int funcionId)
         {
-            return context.Funciones
+            return _context.Funciones
                 .Include(f => f.Pelicula)
                 .Include(f => f.Sala)
                 .FirstOrDefault(f => f.Id == funcionId);
@@ -23,7 +28,7 @@ namespace PNT1_TP_Cine.Controllers
         // Obtener la cantidad de asientos disponibles para la función
         private int ObtenerAsientosDisponibles(int funcionId, int capacidadSala)
         {
-            int ocupados = context.Tickets
+            int ocupados = _context.Tickets
                 .Where(t => t.FuncionId == funcionId)
                 .Sum(t => t.NumeroAsientos);
 
@@ -73,7 +78,7 @@ namespace PNT1_TP_Cine.Controllers
 
             // Verifico que el usuario este logueado
             var email = User.Identity?.Name;
-            var usuario = context.Usuarios.FirstOrDefault(u => u.Email == email);
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Email == email);
             if (usuario == null)
                 return Unauthorized();
 
@@ -89,8 +94,8 @@ namespace PNT1_TP_Cine.Controllers
             };
 
             // Guardo el ticket en la base de datos
-            context.Tickets.Add(ticket);
-            context.SaveChanges();
+            _context.Tickets.Add(ticket);
+            _context.SaveChanges();
 
             // Redirijo al usuario a la vista del comprobante
             return RedirectToAction("Comprobante", new { id = ticket.Id });
@@ -99,7 +104,7 @@ namespace PNT1_TP_Cine.Controllers
         public IActionResult Comprobante(int id)
         {
             // Verifico que el ticket exista
-            var ticket = context.Tickets
+            var ticket = _context.Tickets
                 .Include(t => t.Funcion)
                     .ThenInclude(f => f.Pelicula)
                 .Include(t => t.Funcion.Sala)
