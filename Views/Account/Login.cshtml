@@ -6,15 +6,20 @@
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5 bg-dark p-4 rounded shadow-sm mt-5">
             <h2 class="mb-4 text-white text-center">Iniciar sesión</h2>
-
+            @if (TempData["RegistroExitoso"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["RegistroExitoso"]
+                </div>
+            }
             <form asp-action="Login" method="post">
                 <div class="form-group mb-3">
                     <label for="Email" class="text-white">Email</label>
                     <input name="Email" class="form-control" />
                 </div>
                 <div class="form-group mb-4">
-                    <label for="Contraseña" class="text-white">Contraseña</label>
-                    <input name="Contraseña" type="password" class="form-control" />
+                    <label for="Contrasena" class="text-white">Contraseña</label>
+                    <input name="Contrasena" type="password" class="form-control" />
                 </div>
                 <button type="submit" class="btn btn-primary w-100 rounded-pill">Entrar</button>
 

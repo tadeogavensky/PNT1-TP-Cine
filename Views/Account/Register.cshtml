@@ -1,4 +1,5 @@
 ﻿@model PNT1_TP_Cine.Models.Usuario
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
     ViewData["Title"] = "Registrarse";
@@ -7,33 +8,58 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5 bg-dark p-4 rounded shadow-sm mt-5">
-            <h2 class="mb-4 text-white text-center">Registro de Usuario</h2>
+            <h2 class="mb-4 text-white text-center">Registrate</h2>
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-warning">
+                    <strong>Errores del formulario:</strong>
+                    <ul>
+                        @foreach (var item in ViewData.ModelState)
+                        {
+                            foreach (var error in item.Value.Errors)
+                            {
+                                <li><strong>@item.Key</strong>: @error.ErrorMessage</li>
+                            }
+                        }
+                    </ul>
+                </div>
+            }
 
             <form asp-action="Register" method="post">
                 <div class="form-group mb-3">
-                    <label asp-for="Nombre"></label>
+                    <label asp-for="Nombre" class="text-white"></label>
                     <input asp-for="Nombre" class="form-control" />
                     <span asp-validation-for="Nombre" class="text-danger"></span>
                 </div>
+
                 <div class="form-group mb-3">
-                    <label asp-for="Apellido"></label>
+                    <label asp-for="Apellido" class="text-white"></label>
                     <input asp-for="Apellido" class="form-control" />
                     <span asp-validation-for="Apellido" class="text-danger"></span>
                 </div>
+
                 <div class="form-group mb-3">
-                    <label asp-for="Email"></label>
+                    <label asp-for="Email" class="text-white"></label>
                     <input asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
-                <div class="form-group mb-4">
-                    <label asp-for="Contrasena"></label>
-                    <input asp-for="Contrasena" type="password" class="form-control" />
+
+                <div class="form-group mb-3">
+                    <label asp-for="Contrasena" class="text-white"></label>
+                    <input asp-for="Contrasena" class="form-control" type="password" />
                     <span asp-validation-for="Contrasena" class="text-danger"></span>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+
+                <button type="submit" class="btn btn-primary w-100 rounded-pill">Registrarme</button>
             </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
