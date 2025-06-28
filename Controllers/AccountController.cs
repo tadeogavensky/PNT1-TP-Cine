@@ -23,18 +23,35 @@ namespace PNT1_TP_Cine.Controllers
         [HttpPost]
         public IActionResult Register(Usuario usuario)
         {
-            if (ModelState.IsValid)
+            // Validar que el email no esté ya registrado
+            if (_context.Usuarios.Any(u => u.Email == usuario.Email))
             {
-                // Guarda el usuario en la base de datos
+                ModelState.AddModelError("Email", "Ya existe una cuenta registrada con este email.");
+                return View(usuario);
+            }
+
+            // Asignar rol por defecto (cliente)
+            usuario.RolId = 2;
+
+                if (ModelState.IsValid)
+            {
                 _context.Usuarios.Add(usuario);
                 _context.SaveChanges();
-
-                // Después de registrarse, redirige al Login
+                TempData["RegistroExitoso"] = "¡Cuenta creada exitosamente! Ahora podés iniciar sesión.";
                 return RedirectToAction("Login");
+            }
+            foreach (var key in ModelState.Keys)
+            {
+                var state = ModelState[key];
+                foreach (var error in state.Errors)
+                {
+                    Console.WriteLine($"❌ {key}: {error.ErrorMessage}");
+                }
             }
 
             return View(usuario);
         }
+
 
         // GET: /Account/Login
         public IActionResult Login()
@@ -51,22 +68,23 @@ namespace PNT1_TP_Cine.Controllers
 
             if (usuario != null)
             {
-                // Se guarda el Email en TempData como ejemplo de sesión
-                TempData["UsuarioLogueado"] = usuario.Email;
+                HttpContext.Session.SetString("UsuarioLogueado", usuario.Email);
+                HttpContext.Session.SetString("UsuarioNombre", usuario.Nombre);
+                HttpContext.Session.SetInt32("UsuarioRol", usuario.RolId); 
 
-                // Podés redirigir al home o al panel
                 return RedirectToAction("Index", "Home");
             }
 
-            ViewBag.Error = "Email o contraseña incorrectos";
+            ViewBag.Error = "Email o contraseña incorrectos.";
             return View();
         }
+
 
         // GET: /Account/Logout
         public IActionResult Logout()
         {
-            TempData.Clear();
-            return RedirectToAction("Login");
+            HttpContext.Session.Clear(); //Borra toda la sesión
+            return RedirectToAction("Login", "Account");
         }
     }
 }

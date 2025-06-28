@@ -37,10 +37,19 @@
                    class="text-white text-decoration-none @(currentController == "Nosotros" ? "border-bottom border-white pb-1" : "")">
                     Nosotros
                 </a>
-                <a href="@Url.Action("Admin", "Panel")"
-                   class="text-white text-decoration-none @((currentController == "Panel" && currentAction == "Admin") ? "border-bottom border-white pb-1" : "")">
-                    Acceso Admin
-                </a>
+                
+                   @{
+                        var rol = Context.Session.GetInt32("UsuarioRol");
+                    }
+
+                    @if (rol == 1) // Solo lo ve el admin
+                    {
+                        <a href="@Url.Action("Admin", "Panel")"
+                           class="text-white text-decoration-none @(currentController == "Panel" && currentAction == "Admin" ? "border-bottom border-white pb-1" : "")">
+                            Acceso Admin
+                        </a>
+                    }
+                
             </nav>
             @*
             <a href="/iniciar-sesion" class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm">
@@ -48,17 +57,29 @@
             </a>
             *@
             @* Botón que redirige a la vista de inicio de sesión del controlador Account *@
-            <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
-               asp-controller="Account" asp-action="Login">
-                Iniciar sesión
-            </a>
-            
-            @* Botón que redirige al formulario de registro de nuevos usuarios *@
-            <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
-               asp-controller="Account" asp-action="Register">
-                Registrarse
-            </a>
+            @using Microsoft.AspNetCore.Http
 
+            @if (Context.Session.GetString("UsuarioLogueado") != null)
+            {
+                <span class="text-white me-2 fw-bold">
+                    Bienvenido/a, @Context.Session.GetString("UsuarioNombre")
+
+
+                </span>
+                <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
+                   asp-controller="Account" asp-action="Logout">Cerrar sesión</a>
+            }
+            else
+            {
+                <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
+                   asp-controller="Account" asp-action="Login">Iniciar sesión</a>
+
+                <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
+                   asp-controller="Account" asp-action="Register">Registrarse</a>
+            }
+
+            
+       
 
 
         </div>
@@ -133,9 +154,12 @@
         </div>
     </footer>
 
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 
     <style>
