@@ -6,7 +6,7 @@ namespace PNT1_TP_Cine.Models
     {
 
         [Key]
-      
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "El nombre del género es obligatorio.")]

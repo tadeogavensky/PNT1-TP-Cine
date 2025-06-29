@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace PNT1_TP_Cine.Models
 {
@@ -24,13 +25,13 @@ namespace PNT1_TP_Cine.Models
 
         [Required(ErrorMessage = "La imagen es obligatoria.")]
         [DataType(DataType.ImageUrl)]
-        [Url]
         public string Imagen { get; set; } = string.Empty;
 
 
         [ForeignKey("Genero")]
         public int GeneroId { get; set; }
 
+        [ValidateNever]
         public Genero Genero { get; set; } = null!;
 
     }
