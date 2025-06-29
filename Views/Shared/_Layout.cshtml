@@ -37,8 +37,8 @@
                    class="text-white text-decoration-none @(currentController == "Nosotros" ? "border-bottom border-white pb-1" : "")">
                     Nosotros
                 </a>
-                <a href="@Url.Action("Admin", "Panel")"
-                   class="text-white text-decoration-none @((currentController == "Panel" && currentAction == "Admin") ? "border-bottom border-white pb-1" : "")">
+                <a href="@Url.Action("Index", "Admin")"
+                   class="text-white text-decoration-none @((currentController == "Admin" && currentAction == "Index") ? "border-bottom border-white pb-1" : "")">
                     Acceso Admin
                 </a>
             </nav>

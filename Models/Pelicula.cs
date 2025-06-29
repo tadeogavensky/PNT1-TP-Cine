@@ -24,6 +24,7 @@ namespace PNT1_TP_Cine.Models
 
         [Required(ErrorMessage = "La imagen es obligatoria.")]
         [DataType(DataType.ImageUrl)]
+        [Url]
         public string Imagen { get; set; } = string.Empty;
 
 

@@ -1,0 +1,40 @@
+﻿@model PNT1_TP_Cine.Models.Funcion
+
+@{
+    ViewData["Title"] = "Crear Nueva Función";
+}
+
+<div class="container py-5 text-white">
+    <h2>@ViewData["Title"]</h2>
+
+    <form asp-action="CrearFuncion" method="post" class="mt-4">
+        <div class="form-group mb-3">
+            <label asp-for="PeliculaId" class="form-label">Película</label>
+            <select asp-for="PeliculaId" class="form-control" asp-items="ViewBag.Peliculas"></select>
+            <span asp-validation-for="PeliculaId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="SalaId" class="form-label">Sala</label>
+            <select asp-for="SalaId" class="form-control" asp-items="ViewBag.Salas"></select>
+            <span asp-validation-for="SalaId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="FechaHora" class="form-label">Fecha y Hora</label>
+            <input asp-for="FechaHora" type="datetime-local" class="form-control" />
+            <span asp-validation-for="FechaHora" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Crear Función</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
