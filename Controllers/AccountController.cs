@@ -57,15 +57,18 @@ namespace PNT1_TP_Cine.Controllers
 
 
         // GET: /Account/Login
-        public IActionResult Login()
+        [HttpGet("Login")]
+        public IActionResult Login(string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         // POST: /Account/Login
-        [HttpPost]
-        public async Task<IActionResult> Login(string Email, string Contrasena)
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(string Email, string Contrasena, [FromForm] string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl; 
             var usuario = _context.Usuarios
                 .FirstOrDefault(u => u.Email == Email && u.Contrasena == Contrasena);
 
@@ -77,27 +80,37 @@ namespace PNT1_TP_Cine.Controllers
 
             // Crear los claims que representan al usuario
             var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.Name, usuario.Email),
-        new Claim(ClaimTypes.GivenName, usuario.Nombre),
-        new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
-        new Claim(ClaimTypes.Role, usuario.RolId.ToString())
+            {
+                new Claim(ClaimTypes.Name, usuario.Email),
+                new Claim(ClaimTypes.GivenName, usuario.Nombre),
+                new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
+                new Claim(ClaimTypes.Role, usuario.RolId.ToString())
 
-    };
+            };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
             return RedirectToAction("Index", "Home");
         }
 
 
         // GET: /Account/Logout
-        public async Task<IActionResult> Logout()
+        [HttpGet]
+        public async Task<IActionResult> Logout(string returnUrl = null)
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
             return RedirectToAction("Login");
         }
 

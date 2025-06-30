@@ -1,5 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Iniciar sesión";
+    var returnUrl = Context.Request.Query["returnUrl"].ToString();
+
 }
 
 <div class="container">
@@ -13,6 +15,7 @@
                 </div>
             }
             <form asp-action="Login" method="post">
+                <input type="hidden" name="returnUrl" value="@returnUrl" />
                 <div class="form-group mb-3">
                     <label for="Email" class="text-white">Email</label>
                     <input name="Email" class="form-control" />

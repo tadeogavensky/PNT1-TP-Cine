@@ -21,6 +21,8 @@
             @{
                 var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
                 var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+                 // Obtener el returnUrl de tres posibles fuentes:
+                    var returnUrl = Context.Request.Query["returnUrl"].ToString();
             }
 
             <nav class="d-flex gap-4 text-uppercase fw-bold d-none d-md-flex">
@@ -71,20 +73,20 @@
 
                 </span>
                 <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
-                   asp-controller="Account" asp-action="Logout">Cerrar sesión</a>
+                   asp-controller="Account" 
+                   asp-action="Logout" 
+                   asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">
+                   Cerrar sesión
+                </a>
             }
             else
             {
                 <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
-                   asp-controller="Account" asp-action="Login">Iniciar sesión</a>
+                   asp-controller="Account" asp-action="Login" asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">Iniciar sesión</a>
 
                 <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
                    asp-controller="Account" asp-action="Register">Registrarse</a>
             }
-
-            
-       
-
 
         </div>
     </header>
