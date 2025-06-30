@@ -5,17 +5,10 @@ namespace PNT1_TP_Cine.Controllers
 {
     public class HomeController : Controller
     {
-
-        //Context context = new Context();
-        private readonly Context _context;
-
-        public HomeController(Context context)
-        {
-            _context = context;
-        }
+        Context context = new Context();
         public IActionResult Index()
         {
-            List<Pelicula> peliculas = _context.Peliculas.ToList();
+            List<Pelicula> peliculas = context.Peliculas.ToList();
 
             ViewBag.Peliculas = peliculas;
             return View();

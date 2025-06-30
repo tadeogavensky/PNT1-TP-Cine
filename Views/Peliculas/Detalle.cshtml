@@ -1,8 +1,8 @@
-﻿@using PNT1_TP_Cine.Models;
+﻿@using PNT1_TP_Cine.Models; 
 @using System.Globalization;
-@inject PNT1_TP_Cine.Models.Context _context;
 
 @{
+    using var context = new PNT1_TP_Cine.Models.Context();
     List<Funcion> funciones = ViewBag.Funciones;
     Pelicula pelicula = ViewBag.Pelicula;
     var funcionesPorFecha = funciones
@@ -80,7 +80,7 @@
                                     <div class="d-flex flex-wrap gap-2">
                                         @foreach (var funcion in grupoSala.OrderBy(f => f.FechaHora))
                                         {
-                                            var asientosOcupados = _context.Tickets
+                                            var asientosOcupados = context.Tickets
                                                 .Where(t => t.FuncionId == funcion.Id)
                                                 .Sum(t => (int?)t.NumeroAsientos) ?? 0;
     
