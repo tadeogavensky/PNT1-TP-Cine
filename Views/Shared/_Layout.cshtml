@@ -7,7 +7,6 @@
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PNT1_TP_Cine.styles.css" asp-append-version="true" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
 </head>
 <body style="font-family: 'Roboto', serif;">
@@ -39,10 +38,11 @@
                 </a>
                 
                    @{
-                        var rol = Context.Session.GetInt32("UsuarioRol");
+                    var rol = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+
                     }
 
-                    @if (rol == 1) // Solo lo ve el admin
+                @if (rol == "1") // Solo lo ve el admin
                     {
                         <a href="@Url.Action("Admin", "Panel")"
                            class="text-white text-decoration-none @(currentController == "Panel" && currentAction == "Admin" ? "border-bottom border-white pb-1" : "")">
@@ -59,11 +59,15 @@
             @* Botón que redirige a la vista de inicio de sesión del controlador Account *@
             @using Microsoft.AspNetCore.Http
 
-            @if (Context.Session.GetString("UsuarioLogueado") != null)
+            @if (User.Identity.IsAuthenticated)
             {
                 <span class="text-white me-2 fw-bold">
-                    Bienvenido/a, @Context.Session.GetString("UsuarioNombre")
-
+                    @{
+                        var nombre = User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value;
+                    }
+                    <span class="text-white me-2 fw-bold">
+                        Bienvenido/a, @nombre
+                    </span>
 
                 </span>
                 <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
@@ -155,9 +159,11 @@
     </footer>
 
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
+
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
