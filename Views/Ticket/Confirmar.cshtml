@@ -19,7 +19,8 @@
         <p class="fw-bold fs-5">Total: $@total</p>
     </div>
 
-    <form method="post" asp-action="ConfirmarCompra" asp-controller="Ticket">
+    <form asp-controller="Ticket" asp-action="ConfirmarCompra" method="post">
+        @Html.AntiForgeryToken()
         <input type="hidden" name="funcionId" value="@funcion.Id" />
         <input type="hidden" name="cantidad" value="@cantidad" />
 

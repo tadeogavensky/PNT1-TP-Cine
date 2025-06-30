@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PNT1_TP_Cine.Models;
 
+
+
 namespace PNT1_TP_Cine.Controllers
 {
     [Authorize]
@@ -62,6 +64,7 @@ namespace PNT1_TP_Cine.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ConfirmarCompra(int funcionId, int cantidad)
         {
             // Obtengo la función con los datos necesarios
@@ -76,8 +79,13 @@ namespace PNT1_TP_Cine.Controllers
                 return RedirectToAction("Detalle", "Peliculas", new { titulo = funcion.Pelicula.Titulo });
             }
 
+
+
+
             // Verifico que el usuario este logueado
             var email = User.Identity?.Name;
+            Console.WriteLine($"EMAIL (Identity.Name): {email}");
+
             var usuario = _context.Usuarios.FirstOrDefault(u => u.Email == email);
             if (usuario == null)
                 return Unauthorized();
@@ -98,8 +106,20 @@ namespace PNT1_TP_Cine.Controllers
             _context.SaveChanges();
 
             // Redirijo al usuario a la vista del comprobante
-            return RedirectToAction("Comprobante", new { id = ticket.Id });
+            return RedirectToAction("CompraExitosa", new { id = ticket.Id });
+
         }
+
+        public IActionResult CompraExitosa(int id)
+        {
+            if (id == 0)
+                return RedirectToAction("Index", "Home");
+
+            ViewBag.TicketId = id;
+            return View();
+        }
+
+
 
         public IActionResult Comprobante(int id)
         {
