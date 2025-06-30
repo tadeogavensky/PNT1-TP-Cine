@@ -160,50 +160,57 @@
                         {
                             var isAdmin = u.Rol.Nombre == "Admin";
                             <tr>
-                                @if (isAdmin)
-                                {
-                                    <td class="text-danger">@u.Nombre</td>
-                                    <td class="text-danger">@u.Apellido</td>
-                                    <td class="text-danger">@u.Email</td>
-                                    <td class="text-danger">@u.Rol.Nombre</td>
+                                <td class="@(isAdmin ? "text-danger" : "")">@u.Nombre</td>
+                                <td class="@(isAdmin ? "text-danger" : "")">@u.Apellido</td>
+                                <td class="@(isAdmin ? "text-danger" : "")">@u.Email</td>
+                                <td class="@(isAdmin ? "text-danger" : "")">
+                                    <select onchange="updateRole('@u.Id', this.value)" class="form-select form-select-sm">
+                                        @foreach (var role in ViewBag.Roles as List<PNT1_TP_Cine.Models.Rol>)
+                                        {
+                                            if (role.Id == u.Rol.Id)
+                                            {
+                                                <option value="@role.Id" selected>@role.Nombre</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@role.Id">@role.Nombre</option>
+                                            }
+                                        }
+                                    </select>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-warning btn-sm d-flex justify-content-center align-items-center"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#confirmarActualizarFuncionModal"
+                                            data-funcion-id="@u.Id"
+                                            data-accion="/Admin/ResetearPasswordUsuario">
+                                        Reset
+                                    </button>
+                                </td>
+                                @if (!isAdmin) {
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-sm d-flex justify-content-center align-items-center"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#confirmarEliminarFuncionModal"
+                                            data-funcion-id="@u.Id"
+                                            data-accion="/Admin/EliminarUsuario">
+                                        <b>X</b>
+                                    </button>
+                                    </td>
                                 }
                                 else
                                 {
-                                    <td>@u.Nombre</td>
-                                    <td>@u.Apellido</td>
-                                    <td>@u.Email</td>
-                                    <td>@u.Rol.Nombre</td>
+                                    <td class="bg-transparent"></td>
                                 }
-                                <td>
-                                    @if (!isAdmin)
-                                    {
-                                        <button type="button" class="btn btn-warning btn-sm d-flex justify-content-center align-items-center"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#confirmarActualizarFuncionModal"
-                                                data-funcion-id="@u.Id"
-                                                data-accion="/Admin/ResetearPasswordUsuario">
-                                            Reset
-                                        </button>
-                                    }
-                                </td>
-                                <td>
-                                    @if (!isAdmin)
-                                    {
-                                        <button type="button" class="btn btn-danger btn-sm d-flex justify-content-center align-items-center"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#confirmarEliminarFuncionModal"
-                                                data-funcion-id="@u.Id"
-                                                data-accion="/Admin/EliminarUsuario">
-                                            <b>X</b>
-                                        </button>
-                                    }
-                                </td>
                             </tr>
                         }
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-success btn-sm" style="width: 150px; margin-bottom:10px; margin-right: 3px">Crear</button>
+                    <a asp-controller="Admin" asp-action="CrearUsuario"
+                       class="btn btn-success btn-sm" style="width: 150px; margin-bottom:10px; margin-right: 3px">
+                        Crear Usuario
+                    </a>
                 </div>
             </div>
         </div>
@@ -341,5 +348,26 @@
                 mensajeModal.show();
             }
         });
+
+        function updateRole(usuarioId, rolId) {
+            const form = document.createElement('form');
+            form.method = 'post';
+            form.action = '/Admin/ActualizarRolUsuario';
+
+            const usuarioIdInput = document.createElement('input');
+            usuarioIdInput.type = 'hidden';
+            usuarioIdInput.name = 'usuarioId';
+            usuarioIdInput.value = usuarioId;
+            form.appendChild(usuarioIdInput);
+
+            const rolIdInput = document.createElement('input');
+            rolIdInput.type = 'hidden';
+            rolIdInput.name = 'rolId';
+            rolIdInput.value = rolId;
+            form.appendChild(rolIdInput);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
     </script>
 }

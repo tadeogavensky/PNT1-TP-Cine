@@ -48,7 +48,6 @@ namespace PNT1_TP_Cine.Controllers
             // Si la cantidad es mayor a los disponibles, tiro error
             if (cantidad > disponibles)
             {
-                TempData["Error"] = $"No hay suficientes asientos disponibles. Quedan {disponibles}.";
                 return RedirectToAction("Detalle", "Peliculas", new { titulo = funcion.Pelicula.Titulo });
             }
 
@@ -69,7 +68,6 @@ namespace PNT1_TP_Cine.Controllers
             int disponibles = ObtenerAsientosDisponibles(funcionId, funcion.Sala.Capacidad);
             if (cantidad > disponibles)
             {
-                TempData["Error"] = $"No hay suficientes asientos disponibles. Quedan {disponibles}.";
                 return RedirectToAction("Detalle", "Peliculas", new { titulo = funcion.Pelicula.Titulo });
             }
 

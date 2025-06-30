@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PNT1_TP_Cine.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PNT1_TP_Cine.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         Context context = new Context();
@@ -35,8 +37,10 @@ namespace PNT1_TP_Cine.Controllers
 
             List<Usuario> listaDeUsuarios = context.Usuarios // Listo los usuarios
                 .Include(u => u.Rol)  // Me agrega el Rol al usuario en la lista creada
+                .Where(u => u.Rol != null)
                 .ToList();
             ViewBag.Usuarios = listaDeUsuarios; // Mando la lista de usuarios a la Vista
+            ViewBag.Roles = context.Roles.ToList();
 
             return View();
         }
@@ -145,7 +149,33 @@ namespace PNT1_TP_Cine.Controllers
             return View(funcion);
         }
 
+        [HttpGet] // Asegúrate de incluir este decorador
+        public IActionResult CrearUsuario(bool fromAdmin = true) // Parámetro opcional
+        {
+            // Cargar datos necesarios (ej: roles para dropdown)
+            ViewBag.Roles = context.Roles
+                .Select(r => new SelectListItem(r.Nombre, r.Id.ToString()))
+                .ToList();
 
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CrearUsuario(Usuario usuario)
+        {
+            if (ModelState.IsValid)
+            {
+                usuario.RolId = usuario.RolId; // Mantiene el rol seleccionado
+                context.Usuarios.Add(usuario);
+                context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            // Recargar datos si hay errores
+            ViewBag.Roles = context.Roles.ToList();
+            return View(usuario);
+        }
+        
         [HttpPost]
         public IActionResult EliminarFuncion(int id) // Eliminar Funcion via ID c/checkeo
         {
@@ -205,6 +235,11 @@ namespace PNT1_TP_Cine.Controllers
         {
             var usuario = context.Usuarios.Include(u => u.Tickets).Include(u => u.Rol).FirstOrDefault(u => u.Id == id);
             if (usuario == null) return RedirectToAction("Index");
+            if (usuario.RolId == 1)
+            {
+                TempData["Error"] = "No puedes eliminar tu propio usuario administrador.";
+                return RedirectToAction("Index");
+            }
 
             context.Usuarios.Remove(usuario);
             context.SaveChanges();
@@ -220,6 +255,26 @@ namespace PNT1_TP_Cine.Controllers
             usuario.Contrasena = Convert.ToBase64String(RandomNumberGenerator.GetBytes(8)); // si existe, reseteo el pass
             context.Usuarios.Update(usuario); // actualizo el pass en el user
             context.SaveChanges(); // y guardo los cambios
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult ActualizarRolUsuario(int usuarioId, int rolId)
+        {
+            var usuario = context.Usuarios.Find(usuarioId);
+            var rol = context.Roles.Find(rolId);
+
+            if (usuario != null && rol != null)
+            {
+                usuario.RolId = rolId;
+                context.SaveChanges();
+                TempData["SuccessMessage"] = "Rol de usuario actualizado correctamente.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "No se pudo actualizar el rol del usuario.";
+            }
 
             return RedirectToAction("Index");
         }

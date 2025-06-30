@@ -71,14 +71,19 @@ namespace PNT1_TP_Cine.Controllers
                 ViewBag.Error = "Email o contraseña incorrectos.";
                 return View();
             }
-
+            string rolNombre = usuario.RolId switch
+            {
+                1 => "Admin",
+                2 => "Cliente",
+                _ => "Guest" // Valor por defecto
+            };
             // Crear los claims que representan al usuario
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, usuario.Email),
                 new Claim(ClaimTypes.GivenName, usuario.Nombre),
                 new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
-                new Claim(ClaimTypes.Role, usuario.RolId.ToString())
+                new Claim(ClaimTypes.Role, rolNombre)
 
             };
 
@@ -97,9 +102,15 @@ namespace PNT1_TP_Cine.Controllers
 
         // GET: /Account/Logout
         [HttpGet]
-        public async Task<IActionResult> Logout(string returnUrl = null)
+        public IActionResult Logout(string returnUrl = null)
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Si el returnUrl es del Admin, redirige al Home
+            if (!string.IsNullOrEmpty(returnUrl) && returnUrl.StartsWith("/Admin"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
             if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
             {

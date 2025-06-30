@@ -39,12 +39,7 @@
                     Nosotros
                 </a>
                 
-                   @{
-                    var rol = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
-
-                    }
-
-                @if (rol == "1") // Solo lo ve el admin
+                   @if (User.IsInRole("Admin")) // Solo lo ve el admin
                     {
                         <a href="@Url.Action("Index", "Admin")"
                            class="text-white text-decoration-none @(currentController == "Admin" && currentAction == "Index" ? "border-bottom border-white pb-1" : "")">

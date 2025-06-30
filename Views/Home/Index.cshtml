@@ -44,7 +44,7 @@
     <h3 class="mb-4">ESTRENOS</h3>
 
     @{
-        var estrenos = peliculas.Where(p => p.FechaEstreno == DateTime.Today).ToList();
+        var estrenos = peliculas.Where(p => p.FechaEstreno >= DateTime.Today).ToList();
     }
 
     @if (estrenos.Any())
