@@ -1,23 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PNT1_TP_Cine.Models;
+using System.Diagnostics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PNT1_TP_Cine.Controllers
 {
     public class PeliculasController : Controller
     {
-        //Context context = new Context();
-        private readonly Context _context;
-
-        public PeliculasController(Context context)
-        {
-            _context = context;
-        }
+        Context context = new Context();
         public IActionResult Index()
         {
             // Lista todas las peliculas con su genero
-            var peliculas = _context.Peliculas
+            var peliculas = context.Peliculas
                 .Include(p => p.Genero) 
                 .ToList();
 
@@ -36,7 +31,7 @@ namespace PNT1_TP_Cine.Controllers
             }
 
             // Busca la película por título 
-            var pelicula = _context.Peliculas
+            var pelicula = context.Peliculas
                  .Include(p => p.Genero) 
                  .FirstOrDefault(p => p.Titulo == titulo);
 
@@ -47,7 +42,7 @@ namespace PNT1_TP_Cine.Controllers
             }
 
             // Obtiene las funciones asociadas a la película
-            List<Funcion> funciones = _context.Funciones
+            List<Funcion> funciones = context.Funciones
                 .Include(f => f.Sala)
                 .Where(f => f.PeliculaId == pelicula.Id)
                 .ToList();
@@ -55,6 +50,11 @@ namespace PNT1_TP_Cine.Controllers
             // ViewBags con los datos
             ViewBag.Funciones = funciones;
             ViewBag.Pelicula = pelicula;
+
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
 
             // Devuelve la vista
             return View(pelicula);

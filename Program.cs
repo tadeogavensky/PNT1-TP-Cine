@@ -7,8 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<Context>(options =>
-    options.UseSqlServer("Data Source=localhost;Initial Catalog=PNT1_TP1_Cine;Integrated Security=true;TrustServerCertificate=true;Encrypt=true"));
 builder.Services.AddSession();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
