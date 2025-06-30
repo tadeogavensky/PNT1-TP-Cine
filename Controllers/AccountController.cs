@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using PNT1_TP_Cine.Models;
 using System.Linq;
+using System.Security.Claims;
 
 namespace PNT1_TP_Cine.Controllers
 {
@@ -61,30 +64,42 @@ namespace PNT1_TP_Cine.Controllers
 
         // POST: /Account/Login
         [HttpPost]
-        public IActionResult Login(string Email, string Contrasena)
+        public async Task<IActionResult> Login(string Email, string Contrasena)
         {
             var usuario = _context.Usuarios
                 .FirstOrDefault(u => u.Email == Email && u.Contrasena == Contrasena);
 
-            if (usuario != null)
+            if (usuario == null)
             {
-                HttpContext.Session.SetString("UsuarioLogueado", usuario.Email);
-                HttpContext.Session.SetString("UsuarioNombre", usuario.Nombre);
-                HttpContext.Session.SetInt32("UsuarioRol", usuario.RolId); 
-
-                return RedirectToAction("Index", "Home");
+                ViewBag.Error = "Email o contraseña incorrectos.";
+                return View();
             }
 
-            ViewBag.Error = "Email o contraseña incorrectos.";
-            return View();
+            // Crear los claims que representan al usuario
+            var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.Name, usuario.Email),
+        new Claim(ClaimTypes.GivenName, usuario.Nombre),
+        new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
+        new Claim(ClaimTypes.Role, usuario.RolId.ToString())
+
+    };
+
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+            return RedirectToAction("Index", "Home");
         }
 
 
         // GET: /Account/Logout
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            HttpContext.Session.Clear(); //Borra toda la sesión
-            return RedirectToAction("Login", "Account");
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login");
         }
+
     }
 }
