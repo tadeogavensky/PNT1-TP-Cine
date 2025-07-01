@@ -31,11 +31,11 @@
                     Películas
                 </a>
                 <a href="@Url.Action("Promociones", "Home")"
-                   class="fs-6 text-white text-decoration-none @(currentController == "Promociones" ? "border-bottom border-white" : "")">
+                   class="fs-6 text-white text-decoration-none @(currentController == "Home" && currentAction == "Promociones" ? "border-bottom border-white" : "")">
                     Promociones
                 </a>
                 <a href="@Url.Action("Nosotros", "Home")"
-                   class="fs-6 text-white text-decoration-none @(currentController == "Nosotros" ? "border-bottom border-white" : "")">
+                   class="fs-6 text-white text-decoration-none @(currentController == "Home" && currentAction == "Nosotros" ? "border-bottom border-white" : "")">
                     Nosotros
                 </a>
                 
@@ -115,12 +115,11 @@
     @await RenderSectionAsync("Scripts", required: false)
 
     <style>
-        /* --- Agrega estas reglas --- */
         html, body {
             margin: 0;
             padding: 0;
-            height: 100%; /* Asegura que body ocupe el 100% del viewport */
-            background-color: black; /* Fondo negro para toda la página */
+            height: 100%; 
+            background-color: black; 
         }
 
         a {
