@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PNT1_TP_Cine.Models;
 using System.Security.Claims;
@@ -30,8 +31,14 @@ namespace PNT1_TP_Cine.Controllers
             // Asignar rol por defecto (cliente)
             usuario.RolId = 2;
 
+
+
             if (ModelState.IsValid)
             {
+
+                var passwordHasher = new PasswordHasher<Usuario>();
+                usuario.Contrasena = passwordHasher.HashPassword(usuario, usuario.Contrasena);
+
                 context.Usuarios.Add(usuario);
                 context.SaveChanges();
                 TempData["RegistroExitoso"] = "¡Cuenta creada exitosamente! Ahora podés iniciar sesión.";
@@ -62,48 +69,58 @@ namespace PNT1_TP_Cine.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login(string Email, string Contrasena, [FromForm] string returnUrl = null)
         {
-            if (!string.IsNullOrEmpty(returnUrl) && returnUrl.Contains("/Login", StringComparison.OrdinalIgnoreCase))
-            {
-                returnUrl = null; // Eliminamos la URL si apunta al Login
-            }
-
             ViewData["ReturnUrl"] = returnUrl;
-            var usuario = context.Usuarios
-                .FirstOrDefault(u => u.Email == Email && u.Contrasena == Contrasena);
+
+            // Buscar el usuario por email
+            var usuario = context.Usuarios.FirstOrDefault(u => u.Email == Email);
 
             if (usuario == null)
             {
                 ViewBag.Error = "Email o contraseña incorrectos.";
                 return View();
             }
+
+            // Verificar el hash de la contraseña
+            var passwordHasher = new PasswordHasher<Usuario>();
+            var result = passwordHasher.VerifyHashedPassword(usuario, usuario.Contrasena, Contrasena);
+
+            if (result != PasswordVerificationResult.Success)
+            {
+                ViewBag.Error = "Email o contraseña incorrectos.";
+                return View();
+            }
+
+            // Asignar rol
             string rolNombre = usuario.RolId switch
             {
                 1 => "Admin",
                 2 => "Cliente",
-                _ => "Guest" // Valor por defecto
+                _ => "Guest"
             };
-            // Crear los claims que representan al usuario
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, usuario.Email),
-                new Claim(ClaimTypes.GivenName, usuario.Nombre),
-                new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
-                new Claim(ClaimTypes.Role, rolNombre)
 
-            };
+            // Crear los claims
+            var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.Name, usuario.Email),
+        new Claim(ClaimTypes.GivenName, usuario.Nombre),
+        new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
+        new Claim(ClaimTypes.Role, rolNombre)
+    };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
+            // Iniciar sesión
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl) && !returnUrl.Contains("/Login"))
+            // Redirección
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
             }
+
             return RedirectToAction("Index", "Home");
         }
-
 
         // GET: /Account/Logout
         [HttpGet]

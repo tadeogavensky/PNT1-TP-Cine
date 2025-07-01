@@ -5,9 +5,9 @@
     ViewData["Title"] = "Registrarse";
 }
 
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5 bg-dark p-4 rounded shadow-sm mt-5">
+<div class="container vh-100 d-flex flex-column align-items-center justify-content-center w-100">
+    <div class="row justify-content-center w-100">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-5 bg-dark p-4 rounded shadow-sm mt-5">
             <h2 class="mb-4 text-white text-center">Registrate</h2>
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
@@ -27,28 +27,28 @@
                 </div>
             }
 
-            <form asp-action="Register" method="post">
+            <form asp-action="Register" method="post" novalidate>
                 <div class="form-group mb-3">
                     <label asp-for="Nombre" class="text-white"></label>
-                    <input asp-for="Nombre" class="form-control" />
+                    <input asp-for="Nombre" class="form-control" autocomplete="given-name" required />
                     <span asp-validation-for="Nombre" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="Apellido" class="text-white"></label>
-                    <input asp-for="Apellido" class="form-control" />
+                    <input asp-for="Apellido" class="form-control" autocomplete="family-name" required />
                     <span asp-validation-for="Apellido" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="Email" class="text-white"></label>
-                    <input asp-for="Email" class="form-control" />
+                    <input asp-for="Email" class="form-control" type="email" autocomplete="email" required />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label asp-for="Contrasena" class="text-white"></label>
-                    <input asp-for="Contrasena" class="form-control" type="password" />
+                    <input asp-for="Contrasena" class="form-control" type="password" autocomplete="new-password" required />
                     <span asp-validation-for="Contrasena" class="text-danger"></span>
                 </div>
 
@@ -59,7 +59,7 @@
 </div>
 
 @section Scripts {
-    @{
+@{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
