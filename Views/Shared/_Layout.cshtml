@@ -25,17 +25,17 @@
                     var returnUrl = Context.Request.Query["returnUrl"].ToString();
             }
 
-            <nav class="d-flex gap-4 text-uppercase fw-bold d-none d-md-flex">
+            <nav class="d-flex gap-4 text-uppercase fw-bold d-none d-md-flex fs-4">
                 <a href="@Url.Action("Index", "Peliculas")"
-                   class="text-white text-decoration-none @(currentController == "Peliculas" ? "border-bottom border-white pb-1" : "")">
+                   class="text-white text-decoration-none @(currentController == "Peliculas" ? "border-bottom border-white " : "")">
                     Películas
                 </a>
                 <a href="@Url.Action("Promociones", "Home")"
-                   class="text-white text-decoration-none @(currentController == "Promociones" ? "border-bottom border-white pb-1" : "")">
+                   class="fs-3 text-white text-decoration-none @(currentController == "Promociones" ? "border-bottom border-white " : "")">
                     Promociones
                 </a>
                 <a href="@Url.Action("Nosotros", "Home")"
-                   class="text-white text-decoration-none @(currentController == "Nosotros" ? "border-bottom border-white pb-1" : "")">
+                   class="text-white text-decoration-none @(currentController == "Nosotros" ? "border-bottom border-white " : "")">
                     Nosotros
                 </a>
                 
@@ -58,29 +58,33 @@
 
             @if (User.Identity.IsAuthenticated)
             {
-                <span class="text-white me-2 fw-bold">
-                    @{
-                        var nombre = User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value;
-                    }
+                <div class="d-flex gap-2 position-relative align-content-end">
                     <span class="text-white me-2 fw-bold">
-                        Bienvenido/a, @nombre
-                    </span>
+                        @{
+                            var nombre = User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value;
+                        }
+                        <span class="text-white me-2 fw-bold">
+                            Bienvenido/a, @nombre
+                        </span>
 
-                </span>
-                <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
-                   asp-controller="Account" 
-                   asp-action="Logout" 
-                   asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">
-                   Cerrar sesión
-                </a>
+                    </span>
+                    <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
+                       asp-controller="Account"
+                       asp-action="Logout"
+                       asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">
+                        Cerrar sesión
+                    </a>
+                </div>
             }
             else
             {
-                <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
-                   asp-controller="Account" asp-action="Login" asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">Iniciar sesión</a>
+                <div class="d-flex gap-2 position-relative align-content-end">
+                    <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
+                       asp-controller="Account" asp-action="Login" asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">Iniciar sesión</a>
 
-                <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
-                   asp-controller="Account" asp-action="Register">Registrarse</a>
+                 <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
+                    asp-controller="Account" asp-action="Register">Registrarse</a>
+                </div>
             }
 
         </div>
@@ -90,13 +94,18 @@
         @RenderBody()
     </main>
 
-    <footer class="bg-black text-white pt-5 border-top border-white">
+    <footer class="bg-black text-white pt-3 pb-3 border-top border-white">
         <div class="container">
-            <small>
-                Copyright © 2025 Cine Ateneo<br />
-                Dirección General de Defensa y Protección al Consumidor: Para consultas y/o denuncias haga
-                <a href="#" class="text-white text-decoration-underline">click aquí</a>
-            </small>
+            <div class="d-flex justify-content-between flex-wrap small">
+                <div>
+                    © 2025 Cine Ateneo
+                </div>
+                <div>
+                    Dirección General de Defensa y Protección al Consumidor: Para consultas y/o denuncias haga
+                    <a href="https://www.argentina.gob.ar/servicio/iniciar-un-reclamo-ante-defensa-del-consumidor"
+                       class="text-white text-decoration-underline">click aquí</a>
+                </div>
+            </div>
         </div>
     </footer>
 
