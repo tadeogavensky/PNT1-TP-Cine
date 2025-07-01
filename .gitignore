@@ -38,3 +38,6 @@ artifacts/
 # Rider (si usás JetBrains también)
 .idea/
 *.sln.iml
+
+# Excluir el archivo de contexto de Entity Framework
+Models/Context.cs

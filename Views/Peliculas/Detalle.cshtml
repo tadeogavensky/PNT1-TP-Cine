@@ -17,11 +17,10 @@
         <div class="d-flex flex-column justify-content-start">
             <h3 class="text-uppercase fw-bold">@pelicula.Titulo</h3>
 
-       <div class="my-4 w-100 w-md-300px" style="max-width: 100%;">
-            <img src="@pelicula.Imagen"
-                 class="w-100 rounded-4"
-                 style="height: 600px; object-fit: cover;"
-                 alt="Imagen de @pelicula.Titulo" />
+       <div class="my-4 w-100">
+         <img src="@pelicula.Imagen"
+             class="w-100 rounded-4 h-300 h-lg-400"
+             alt="Imagen de @pelicula.Titulo" />
         </div>
 
 
@@ -65,7 +64,7 @@
                                     .GroupBy(f => f.Sala.Numero)
                                     .OrderBy(g => g.Key);
                             }
-
+                            
                             @foreach (var grupoSala in funcionesPorSala)
                             {
                                 <div class="mb-2">
@@ -99,6 +98,12 @@
                                                         title="Agotado">
                                                     @funcion.FechaHora.ToString("HH:mm")
                                                 </button>
+                                            }
+                                            @if (TempData["Error"] != null)
+                                            {
+                                                <div class="alert alert-danger p-2 small mb-2">
+                                                    @TempData["Error"]
+                                                </div>
                                             }
                                         }
                                     </div>
@@ -143,7 +148,20 @@
     font-weight: bold;
 }
 
-
+.h-300 {
+    height: 300px !important;
+}
+.h-400 {
+    height: 400px !important;
+}
+.h-lg-400 {
+    height: 400px !important;
+}
+@@media (min-width: 992px) {
+    .h-lg-400 {
+        height: 400px !important;
+    }
+}
 </style>
 
 
@@ -159,11 +177,7 @@
         const selectedButton = document.querySelector(`.btn-horario[data-funcion-id='${funcionId}']`);
         const asientosDisponibles = parseInt(selectedButton.getAttribute('data-asientos-disponibles'), 10);
         const cantidadSeleccionada = parseInt(document.getElementById('cantidad').value, 10);
-
-        if (cantidadSeleccionada > asientosDisponibles) {
-            e.preventDefault();
-            alert(`No hay suficientes asientos disponibles. Quedan ${asientosDisponibles}.`);
-        }
+       
     });
 
         const buttons = document.querySelectorAll("button[data-funcion-id]");
