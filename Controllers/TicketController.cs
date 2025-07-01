@@ -98,7 +98,7 @@ namespace PNT1_TP_Cine.Controllers
             context.SaveChanges();
 
             // Redirijo al usuario a la vista del comprobante
-            return RedirectToAction("CompraExitosa", new { id = ticket.Id });
+            return RedirectToAction("CompraExitosa", ticket);
 
         }
 
@@ -107,8 +107,17 @@ namespace PNT1_TP_Cine.Controllers
             if (id == 0)
                 return RedirectToAction("Index", "Home");
 
-            ViewBag.TicketId = id;
-            return View();
+            var ticket = context.Tickets
+                .Include(t => t.Funcion)
+                    .ThenInclude(f => f.Pelicula)
+                .Include(t => t.Funcion.Sala)
+                .Include(t => t.Usuario)
+                .FirstOrDefault(t => t.Id == id);
+
+            if (ticket == null)
+                return NotFound("El ticket no existe.");
+
+            return View(ticket);
         }
 
 

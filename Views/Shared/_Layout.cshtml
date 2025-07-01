@@ -25,62 +25,61 @@
                     var returnUrl = Context.Request.Query["returnUrl"].ToString();
             }
 
-            <nav class="d-flex gap-4 text-uppercase fw-bold d-none d-md-flex">
+            <nav class="d-flex gap-4 text-uppercase fw-bold d-none d-md-flex fs-4">
                 <a href="@Url.Action("Index", "Peliculas")"
-                   class="text-white text-decoration-none @(currentController == "Peliculas" ? "border-bottom border-white pb-1" : "")">
+                   class="fs-6 text-white text-decoration-none @(currentController == "Peliculas" ? "border-bottom border-white" : "")">
                     Películas
                 </a>
                 <a href="@Url.Action("Promociones", "Home")"
-                   class="text-white text-decoration-none @(currentController == "Promociones" ? "border-bottom border-white pb-1" : "")">
+                   class="fs-6 text-white text-decoration-none @(currentController == "Promociones" ? "border-bottom border-white" : "")">
                     Promociones
                 </a>
                 <a href="@Url.Action("Nosotros", "Home")"
-                   class="text-white text-decoration-none @(currentController == "Nosotros" ? "border-bottom border-white pb-1" : "")">
+                   class="fs-6 text-white text-decoration-none @(currentController == "Nosotros" ? "border-bottom border-white" : "")">
                     Nosotros
                 </a>
                 
                    @if (User.IsInRole("Admin")) // Solo lo ve el admin
                     {
                         <a href="@Url.Action("Index", "Admin")"
-                           class="text-white text-decoration-none @(currentController == "Admin" && currentAction == "Index" ? "border-bottom border-white pb-1" : "")">
-                            Acceso Admin
+                         class="fs-6 text-white text-decoration-none @(currentController == "Admin" && currentAction == "Index" ? "border-bottom border-white pb-1" : "")">
+                         Acceso Admin
                         </a>
                     }
                 
             </nav>
-            @*
-            <a href="/iniciar-sesion" class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm">
-                Acceder
-            </a>
-            *@
-            @* Botón que redirige a la vista de inicio de sesión del controlador Account *@
+
             @using Microsoft.AspNetCore.Http
 
             @if (User.Identity.IsAuthenticated)
             {
-                <span class="text-white me-2 fw-bold">
-                    @{
-                        var nombre = User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value;
-                    }
+                <div class="d-flex gap-2 position-relative align-items-center align-content-end">
                     <span class="text-white me-2 fw-bold">
-                        Bienvenido/a, @nombre
-                    </span>
+                        @{
+                            var nombre = User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value;
+                        }
+                        <span class="text-white me-2 fw-bold">
+                            Bienvenido/a, @nombre
+                        </span>
 
-                </span>
-                <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
-                   asp-controller="Account" 
-                   asp-action="Logout" 
-                   asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">
-                   Cerrar sesión
-                </a>
+                    </span>
+                    <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
+                       asp-controller="Account"
+                       asp-action="Logout"
+                       asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">
+                        Cerrar sesión
+                    </a>
+                </div>
             }
             else
             {
-                <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
-                   asp-controller="Account" asp-action="Login" asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">Iniciar sesión</a>
+                <div class="d-flex gap-2 position-relative align-content-end">
+                    <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
+                       asp-controller="Account" asp-action="Login" asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">Iniciar sesión</a>
 
-                <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
-                   asp-controller="Account" asp-action="Register">Registrarse</a>
+                 <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
+                    asp-controller="Account" asp-action="Register">Registrarse</a>
+                </div>
             }
 
         </div>
@@ -90,66 +89,16 @@
         @RenderBody()
     </main>
 
-    <footer class="bg-black text-white pt-5 border-top border-white">
+    <footer class="bg-black text-white pt-3 pb-3 border-top border-white">
         <div class="container">
-            <div class="row row-cols-2 row-cols-md-5 text-uppercase fw-bold mb-4">
+            <div class="d-flex justify-content-between flex-wrap small">
                 <div>
-                    <h6 class="mb-3">Cines</h6>
-                    <ul class="list-unstyled fw-normal text-white-50">
-                        <li><a href="#" class="text-white-50">Precios Vigentes</a></li>
-                        <li><a href="#" class="text-white-50">Formatos</a></li>
-                    </ul>
+                    © 2025 Cine Ateneo
                 </div>
                 <div>
-                    <h6 class="mb-3">Promociones</h6>
-                    <ul class="list-unstyled fw-normal text-white-50">
-                        <li><a href="#" class="text-white-50">Promociones</a></li>
-                        <li><a href="#" class="text-white-50">Asociá tu cuenta YPF</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h6 class="mb-3">Ventas Corporativas</h6>
-                    <ul class="list-unstyled fw-normal text-white-50">
-                        <li><a href="#" class="text-white-50">Solicitar presupuestos</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h6 class="mb-3">Cumpleaños y Grupos</h6>
-                    <ul class="list-unstyled fw-normal text-white-50">
-                        <li><a href="#" class="text-white-50">Eventos Especiales</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h6 class="mb-3">Ayuda</h6>
-                    <ul class="list-unstyled fw-normal text-white-50">
-                        <li><a href="#" class="text-white-50">Preguntas Frecuentes</a></li>
-                        <li><a href="#" class="text-white-50">Términos y Condiciones</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="border-top border-secondary mt-3 py-4 px-3 px-md-5">
-                <div class="row text-white-50 gy-4">
-                    <div class="col-12 col-md-6 d-flex flex-column gap-2">
-                        <a href="#">Login</a>
-                        <a href="#">Contacto</a>
-                        <a href="#">Contacto Cine Fan</a>
-                        <a href="#">RRHH</a>
-                        <a href="#">Flix Media</a>
-                        <a href="#">Libro de quejas online</a>
-                    </div>
-
-                    <div class="col-12 col-md-6 d-flex flex-column gap-3">
-                        <small>
-                            Copyright © 2025 Cine Ateneo<br />
-                            Dirección General de Defensa y Protección al Consumidor: Para consultas y/o denuncias haga
-                            <a href="#" class="text-white text-decoration-underline">click aquí</a>
-                        </small>
-
-                        <a href="#" class="btn btn-light fw-bold text-uppercase rounded-4 px-4 py-3 align-self-start">
-                            Botón de arrepentimiento
-                        </a>
-                    </div>
+                    Dirección General de Defensa y Protección al Consumidor: Para consultas y/o denuncias haga
+                    <a href="https://www.argentina.gob.ar/servicio/iniciar-un-reclamo-ante-defensa-del-consumidor"
+                       class="text-white text-decoration-underline">click aquí</a>
                 </div>
             </div>
         </div>

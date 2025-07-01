@@ -34,7 +34,7 @@ ALTER TABLE Funciones CHECK CONSTRAINT ALL;
 ALTER TABLE Usuarios CHECK CONSTRAINT ALL;
 ALTER TABLE Peliculas CHECK CONSTRAINT ALL;
 
-## Dummy Data (INSERTS).
+-- Dummy Data (INSERTS).
 
 INSERT INTO Roles (Nombre) VALUES
 ('Admin'),
@@ -66,7 +66,7 @@ INSERT INTO Usuarios (Nombre, Apellido, Email, Contrasena, RolId) VALUES
 ('Carlos', 'Gomez', 'carlos.gomez@example.com', 'password123', 2),
 ('Ana', 'Martinez', 'ana.martinez@example.com', 'password123', 2),
 ('Admin', 'User', 'admin@example.com', 'password123', 1),
-('Super', 'Admin', 'superadmin@example.com', 'password123', 1);
+('Otro', 'Admin', 'superadmin@example.com', 'password123', 1);
 
 INSERT INTO Salas (Numero, Capacidad) VALUES
 (1, 100),
