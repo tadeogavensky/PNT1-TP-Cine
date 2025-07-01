@@ -50,7 +50,7 @@ INSERT INTO Peliculas (Titulo, Duracion, FechaEstreno, GeneroId, Imagen, Sinopsi
 ('It Chapter Two', 169, CAST(GETDATE() AS DATE), 5, 'https://m.media-amazon.com/images/I/51NB383CKkL._AC_SL1200_.jpg', 'The Losers Club return to face Pennywise.'),
 ('La La Land', 128, CAST(GETDATE() AS DATE), 6, 'https://upload.wikimedia.org/wikipedia/en/a/ab/La_La_Land_%28film%29.png', 'A jazz musician and actress fall in love.'),
 ('Inside Out', 95, CAST(GETDATE() AS DATE), 7, 'https://upload.wikimedia.org/wikipedia/en/0/0a/Inside_Out_%282015_film%29_poster.jpg', 'A young girl’s emotions guide her through change.'),
-('The Social Dilemma', 94, CAST(GETDATE() AS DATE), 8, 'https://www.researchgate.net/publication/377589183/figure/fig3/AS:11431281223415679@1707725963442/The-poster-for-The-Social-Dilemma.jpg', 'A documentary about the dangers of social media.');
+('The Social Dilemma', 94, '2025-04-2', 8, 'https://www.researchgate.net/publication/377589183/figure/fig3/AS:11431281223415679@1707725963442/The-poster-for-The-Social-Dilemma.jpg', 'A documentary about the dangers of social media.');
 
 -- Hash de la contraseña "12345"
 DECLARE @hash NVARCHAR(255) = 'AQAAAAIAAYagAAAAELqyTei/SuRE46F9fFoLOgGsgla8J4HfxQIIeXm9aV8PqGwjrdSXNoH2pKmXmGKQ2A==';
