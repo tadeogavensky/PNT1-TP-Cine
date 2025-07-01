@@ -1,29 +1,33 @@
 ﻿@{
     ViewData["Title"] = "Iniciar sesión";
     var returnUrl = Context.Request.Query["returnUrl"].ToString();
-
 }
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5 bg-dark p-4 rounded shadow-sm mt-5">
+<div class="container vh-100 d-flex flex-column align-items-center justify-content-center w-100">
+    <div class="row justify-content-center w-100">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-5 bg-dark p-4 rounded shadow-sm mt-5 w-100">
             <h2 class="mb-4 text-white text-center">Iniciar sesión</h2>
+
             @if (TempData["RegistroExitoso"] != null)
             {
                 <div class="alert alert-success">
                     @TempData["RegistroExitoso"]
                 </div>
             }
+
             <form asp-action="Login" method="post">
                 <input type="hidden" name="returnUrl" value="@returnUrl" />
+
                 <div class="form-group mb-3">
                     <label for="Email" class="text-white">Email</label>
-                    <input name="Email" class="form-control" />
+                    <input name="Email" type="email" class="form-control" autocomplete="email" required />
                 </div>
+
                 <div class="form-group mb-4">
                     <label for="Contrasena" class="text-white">Contraseña</label>
-                    <input name="Contrasena" type="password" class="form-control" />
+                    <input name="Contrasena" type="password" class="form-control" autocomplete="current-password" required />
                 </div>
+
                 <button type="submit" class="btn btn-primary w-100 rounded-pill">Entrar</button>
 
                 @if (ViewBag.Error != null)
