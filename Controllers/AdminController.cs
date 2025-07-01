@@ -63,6 +63,7 @@ namespace PNT1_TP_Cine.Controllers
             }
 
             ViewBag.Generos = new SelectList(generos, "Id", "Nombre");
+            TempData["Success"] = "Película creada exitosamente.";
             return View();
         }
 
@@ -86,6 +87,7 @@ namespace PNT1_TP_Cine.Controllers
                 Text = "Sala " + s.Numero.ToString()
             }).ToList();
 
+            TempData["Success"] = "Función creada exitosamente.";
             return View();
         }
 
@@ -96,7 +98,7 @@ namespace PNT1_TP_Cine.Controllers
             {
                 context.Salas.Add(sala);
                 context.SaveChanges();
-                TempData["Success"] = "Sala creada exitosamente";
+                TempData["Success"] = "Sala creada exitosamente.";
                 return RedirectToAction("Index");
             }
             return View(sala);
@@ -110,7 +112,7 @@ namespace PNT1_TP_Cine.Controllers
             {
                 context.Peliculas.Add(pelicula);
                 context.SaveChanges();
-                TempData["Success"] = "Película creada exitosamente";
+                TempData["Succes"] = "Película creada exitosamente.";
                 return RedirectToAction("Index");
             }
 
@@ -127,7 +129,7 @@ namespace PNT1_TP_Cine.Controllers
             {
                 context.Funciones.Add(funcion);
                 context.SaveChanges();
-                TempData["Success"] = "Función creada exitosamente";
+                TempData["Success"] = "Función creada exitosamente.";
                 return RedirectToAction("Index");
             }
 
@@ -168,11 +170,13 @@ namespace PNT1_TP_Cine.Controllers
                 usuario.RolId = usuario.RolId; // Mantiene el rol seleccionado
                 context.Usuarios.Add(usuario);
                 context.SaveChanges();
+                TempData["Error"] = "El usuario no pudo ser creado.";
                 return RedirectToAction("Index");
             }
 
             // Recargar datos si hay errores
             ViewBag.Roles = context.Roles.ToList();
+            TempData["Success"] = "Usuario creado exitosamente.";
             return View(usuario);
         }
         
@@ -182,9 +186,11 @@ namespace PNT1_TP_Cine.Controllers
             var funcion = context.Funciones.Find(id);
             if (funcion != null)
             {
+                TempData["Success"] = "Funcion eliminada.";
                 context.Funciones.Remove(funcion);
                 context.SaveChanges();
             }
+                TempData["Error"] = "La funcion no existe.";
             return RedirectToAction("Index");
         }
 
@@ -202,10 +208,15 @@ namespace PNT1_TP_Cine.Controllers
 
             // Eliminar la película
             var pelicula = context.Peliculas.Find(id);
+            if (pelicula == null)
+            {
+                TempData["Error"] = "Error: La película que intentas eliminar no existe.";
+                return RedirectToAction("Index");
+            }
             context.Peliculas.Remove(pelicula);
             context.SaveChanges();
 
-            TempData["Mensaje"] = "La película y sus funciones han sido eliminadas.";
+            TempData["Success"] = "La película y sus funciones han sido eliminadas.";
             return RedirectToAction("Index");
         }
 
@@ -225,22 +236,29 @@ namespace PNT1_TP_Cine.Controllers
             {
                 context.Salas.Remove(sala);
                 context.SaveChanges();
+                TempData["Success"] = "La sala y sus funciones han sido eliminadas.";
+            } else
+            {
+                TempData["Error"] = "La sala que intentas eliminar no existe.";
             }
-            TempData["Mensaje"] = "La sala y sus funciones han sido eliminadas.";
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
         }
 
         [HttpPost]
         public IActionResult EliminarUsuario(int id)
         {
             var usuario = context.Usuarios.Include(u => u.Tickets).Include(u => u.Rol).FirstOrDefault(u => u.Id == id);
-            if (usuario == null) return RedirectToAction("Index");
+            if (usuario == null) 
+            {
+                TempData["Error"] = "El usuario no existe.";
+                return RedirectToAction("Index");
+            }
             if (usuario.RolId == 1)
             {
                 TempData["Error"] = "No puedes eliminar tu propio usuario administrador.";
                 return RedirectToAction("Index");
             }
-
+            TempData["Success"] = "Usuario eliminado exitosamente.";
             context.Usuarios.Remove(usuario);
             context.SaveChanges();
             return RedirectToAction("Index");
@@ -269,11 +287,11 @@ namespace PNT1_TP_Cine.Controllers
             {
                 usuario.RolId = rolId;
                 context.SaveChanges();
-                TempData["SuccessMessage"] = "Rol de usuario actualizado correctamente.";
+                TempData["Success"] = "Rol de usuario actualizado exitosamente.";
             }
             else
             {
-                TempData["ErrorMessage"] = "No se pudo actualizar el rol del usuario.";
+                TempData["Error"] = "No se pudo actualizar el rol del usuario.";
             }
 
             return RedirectToAction("Index");

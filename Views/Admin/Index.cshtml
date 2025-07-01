@@ -325,8 +325,8 @@
             }
 
             // Mostrar modal si hay mensaje o error
-            var mensaje = @Html.Raw(Json.Serialize(TempData["Mensaje"] ?? TempData["Error"]));
-            var hayMensaje = @((TempData["Mensaje"] != null || TempData["Error"] != null).ToString().ToLower());
+            var mensaje = @Html.Raw(Json.Serialize(TempData["Success"] ?? TempData["Error"]));
+            var hayMensaje = @((TempData["Success"] != null || TempData["Error"] != null).ToString().ToLower());
             var esError = @((TempData["Error"] != null).ToString().ToLower());
 
             if (hayMensaje) {
@@ -369,5 +369,6 @@
             document.body.appendChild(form);
             form.submit();
         }
+
     </script>
 }

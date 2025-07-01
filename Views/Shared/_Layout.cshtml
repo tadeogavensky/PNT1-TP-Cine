@@ -73,7 +73,7 @@
             }
             else
             {
-                <div class="d-flex gap-2 position-relative align-content-end">
+                <div class="d-flex flex-column flex-md-row gap-2 position-relative">
                     <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
                        asp-controller="Account" asp-action="Login" asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">Iniciar sesión</a>
 
@@ -89,7 +89,7 @@
         @RenderBody()
     </main>
 
-    <footer class="bg-black text-white pt-3 pb-3 border-top border-white">
+    <footer class="bg-black text-white pt-3 pb-3 border-top border-white fixed-bottom">
         <div class="container">
             <div class="d-flex justify-content-between flex-wrap small">
                 <div>
@@ -115,9 +115,12 @@
     @await RenderSectionAsync("Scripts", required: false)
 
     <style>
-        body {
+        /* --- Agrega estas reglas --- */
+        html, body {
             margin: 0;
             padding: 0;
+            height: 100%; /* Asegura que body ocupe el 100% del viewport */
+            background-color: black; /* Fondo negro para toda la página */
         }
 
         a {

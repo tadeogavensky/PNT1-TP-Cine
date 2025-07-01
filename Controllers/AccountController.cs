@@ -62,7 +62,12 @@ namespace PNT1_TP_Cine.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login(string Email, string Contrasena, [FromForm] string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl; 
+            if (!string.IsNullOrEmpty(returnUrl) && returnUrl.Contains("/Login", StringComparison.OrdinalIgnoreCase))
+            {
+                returnUrl = null; // Eliminamos la URL si apunta al Login
+            }
+
+            ViewData["ReturnUrl"] = returnUrl;
             var usuario = context.Usuarios
                 .FirstOrDefault(u => u.Email == Email && u.Contrasena == Contrasena);
 
@@ -92,7 +97,7 @@ namespace PNT1_TP_Cine.Controllers
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl) && !returnUrl.Contains("/Login"))
             {
                 return Redirect(returnUrl);
             }
