@@ -27,38 +27,33 @@
 
             <nav class="d-flex gap-4 text-uppercase fw-bold d-none d-md-flex fs-4">
                 <a href="@Url.Action("Index", "Peliculas")"
-                   class="text-white text-decoration-none @(currentController == "Peliculas" ? "border-bottom border-white " : "")">
+                   class="fs-6 text-white text-decoration-none @(currentController == "Peliculas" ? "border-bottom border-white" : "")">
                     Películas
                 </a>
                 <a href="@Url.Action("Promociones", "Home")"
-                   class="fs-3 text-white text-decoration-none @(currentController == "Promociones" ? "border-bottom border-white " : "")">
+                   class="fs-6 text-white text-decoration-none @(currentController == "Promociones" ? "border-bottom border-white" : "")">
                     Promociones
                 </a>
                 <a href="@Url.Action("Nosotros", "Home")"
-                   class="text-white text-decoration-none @(currentController == "Nosotros" ? "border-bottom border-white " : "")">
+                   class="fs-6 text-white text-decoration-none @(currentController == "Nosotros" ? "border-bottom border-white" : "")">
                     Nosotros
                 </a>
                 
                    @if (User.IsInRole("Admin")) // Solo lo ve el admin
                     {
                         <a href="@Url.Action("Index", "Admin")"
-                           class="text-white text-decoration-none @(currentController == "Admin" && currentAction == "Index" ? "border-bottom border-white pb-1" : "")">
-                            Acceso Admin
+                         class="fs-6 text-white text-decoration-none @(currentController == "Admin" && currentAction == "Index" ? "border-bottom border-white pb-1" : "")">
+                         Acceso Admin
                         </a>
                     }
                 
             </nav>
-            @*
-            <a href="/iniciar-sesion" class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm">
-                Acceder
-            </a>
-            *@
-            @* Botón que redirige a la vista de inicio de sesión del controlador Account *@
+
             @using Microsoft.AspNetCore.Http
 
             @if (User.Identity.IsAuthenticated)
             {
-                <div class="d-flex gap-2 position-relative align-content-end">
+                <div class="d-flex gap-2 position-relative align-items-center align-content-end">
                     <span class="text-white me-2 fw-bold">
                         @{
                             var nombre = User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value;

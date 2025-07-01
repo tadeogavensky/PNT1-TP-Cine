@@ -1,54 +1,57 @@
 ﻿@using PNT1_TP_Cine.Models;
 @{
+    // Obtenemos la lista de películas desde el ViewBag
     List<Pelicula> peliculas = ViewBag.Peliculas;
 
-    var carousel = new List<string> {
-        "https://apollohou.com/wp-content/uploads/img_9027.jpg",
-        "https://fiu-original.b-cdn.net/fontsinuse.com/use-images/26/26617/26617.jpeg?filename=interstellar_ver7_xlg.jpg",
-        "https://collider.com/wp-content/uploads/dark-knight-rises-movie-poster-banner-catwoman.jpg",
-        "https://collider.com/wp-content/uploads/the-avengers-movie-poster-banners-04.jpg",
-        "https://dunenewsnet.com/wp-content/uploads/2021/08/Dune-Movie-Official-Poster-banner-feature.jpg"
-    };
+    // Filtramos las películas que tienen fecha de estreno a partir de hoy
+    var estrenos = peliculas.Where(p => p.FechaEstreno >= DateTime.Today).ToList();
+}
 
-    }
+<!-- Carrusel de imágenes con películas en estreno -->
 <section id="carousel" class="container py-5 mt-5">
     <div id="carouselPeliculas" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner rounded-4 overflow-hidden">
-            @for (int i = 0; i < carousel.Count; i++)
+            @for (int i = 0; i < estrenos.Count; i++)
             {
+                var pelicula = estrenos[i];
                 <div class="carousel-item @(i == 0 ? "active" : "")">
-                    <img src="@carousel[i]" class="d-block w-100" alt="Imagen @i" style="object-fit: cover; width: 100%; height: 400px; border-radius:10">
+                    <!-- Al hacer clic en la imagen, redirige a la página de detalle de la película -->
+                    <a href="@Url.Action("Detalle", "Peliculas", new { titulo = pelicula.Titulo })">
+                        <img src="@pelicula.Imagen" class="d-block w-100" alt="Imagen de @pelicula.Titulo" style="object-fit: cover; width: 100%; height: 400px; border-radius:10px">
+                    </a>
                 </div>
             }
         </div>
 
+        <!-- Botón para ir a la imagen anterior del carrusel -->
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselPeliculas" data-bs-slide="prev">
             <span class="carousel-control-prev-icon bg-black rounded-3 p-2"></span>
         </button>
+
+        <!-- Botón para ir a la imagen siguiente del carrusel -->
         <button class="carousel-control-next" type="button" data-bs-target="#carouselPeliculas" data-bs-slide="next">
             <span class="carousel-control-next-icon bg-black rounded-3 p-2"></span>
         </button>
     </div>
 </section>
 
+<!-- Estilos para el efecto hover en las tarjetas -->
 <style>
     .card:hover .card-body {
         background-color: white;
         transition: all 0.3s ease-in-out;
-       cursor: pointer;
-       color:black;
+        cursor: pointer;
+        color: black;
     }
 </style>
 
+<!-- Sección principal con Estrenos y Cartelera -->
 <section id="home" class="container py-5 text-white">
     <h3 class="mb-4">ESTRENOS</h3>
 
-    @{
-        var estrenos = peliculas.Where(p => p.FechaEstreno >= DateTime.Today).ToList();
-    }
-
     @if (estrenos.Any())
     {
+        <!-- Grid con tarjetas de películas en estreno -->
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
             @foreach (var pelicula in estrenos)
             {
@@ -73,9 +76,11 @@
     }
     else
     {
+        <!-- Mensaje si no hay estrenos -->
         <h4>No hay películas en estreno</h4>
     }
 
+    <!-- Sección de películas en cartelera -->
     <h3 class="my-4">PELÍCULAS EN CARTELERA</h3>
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
@@ -83,16 +88,11 @@
         {
             <div class="col">
                 <a href="@Url.Action("Detalle", "Peliculas", new { titulo = pelicula.Titulo })" class="text-decoration-none">
-
                     <div class="card h-100 bg-dark text-white rounded-4 d-flex flex-column position-relative overflow-hidden">
-
                         <div style="height: 300px; overflow: hidden;">
                             <img src="@pelicula.Imagen" class="w-100 h-100 object-fit-cover rounded-top-4" alt="Imagen de @pelicula.Titulo" />
                         </div>
-
-                   
                         <div class="position-absolute bg-black opacity-75 top-0 m-2 p-2 rounded-4">@pelicula.Duracion min</div>
-    
                         <div class="card-body d-flex flex-column justify-content-between rounded-bottom-4">
                             <h5 class="card-title text-uppercase">@pelicula.Titulo</h5>
                             <p class="card-text">
@@ -105,4 +105,5 @@
         }
     </div>
 </section>
+
 
