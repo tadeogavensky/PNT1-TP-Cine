@@ -63,7 +63,6 @@ namespace PNT1_TP_Cine.Controllers
             }
 
             ViewBag.Generos = new SelectList(generos, "Id", "Nombre");
-            TempData["Success"] = "Película creada exitosamente.";
             return View();
         }
 
@@ -87,7 +86,6 @@ namespace PNT1_TP_Cine.Controllers
                 Text = "Sala " + s.Numero.ToString()
             }).ToList();
 
-            TempData["Success"] = "Función creada exitosamente.";
             return View();
         }
 
@@ -170,16 +168,19 @@ namespace PNT1_TP_Cine.Controllers
                 usuario.RolId = usuario.RolId; // Mantiene el rol seleccionado
                 context.Usuarios.Add(usuario);
                 context.SaveChanges();
-                TempData["Error"] = "El usuario no pudo ser creado.";
+                TempData["Success"] = "Usuario creado exitosamente.";
                 return RedirectToAction("Index");
             }
-
-            // Recargar datos si hay errores
-            ViewBag.Roles = context.Roles.ToList();
-            TempData["Success"] = "Usuario creado exitosamente.";
+            else
+            {
+                // Recargar datos si hay errores
+                ViewBag.Roles = context.Roles.ToList();
+                TempData["Error"] = "El usuario no pudo ser creado.";
+            }
+                
             return View(usuario);
         }
-        
+
         [HttpPost]
         public IActionResult EliminarFuncion(int id) // Eliminar Funcion via ID c/checkeo
         {
@@ -189,8 +190,11 @@ namespace PNT1_TP_Cine.Controllers
                 TempData["Success"] = "Funcion eliminada.";
                 context.Funciones.Remove(funcion);
                 context.SaveChanges();
-            }
+            } 
+            else
+            { 
                 TempData["Error"] = "La funcion no existe.";
+            }
             return RedirectToAction("Index");
         }
 
