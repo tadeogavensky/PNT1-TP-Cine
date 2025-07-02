@@ -1,5 +1,6 @@
 
 
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,11 +17,14 @@ namespace PNT1_TP_Cine.Models
 
         [ForeignKey("Pelicula")]
         public int PeliculaId { get; set; }
+
+        [ValidateNever]
         public Pelicula Pelicula { get; set; } = null!;
 
         [ForeignKey("Sala")]
         public int SalaId { get; set; }
 
+        [ValidateNever]
         public Sala Sala { get; set; } = null!;
     }
 }

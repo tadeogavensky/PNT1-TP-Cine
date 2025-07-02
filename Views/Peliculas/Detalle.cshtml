@@ -1,7 +1,8 @@
-﻿@using PNT1_TP_Cine.Models;
+﻿@using PNT1_TP_Cine.Models; 
 @using System.Globalization;
 
 @{
+    using var context = new PNT1_TP_Cine.Models.Context();
     List<Funcion> funciones = ViewBag.Funciones;
     Pelicula pelicula = ViewBag.Pelicula;
     var funcionesPorFecha = funciones
@@ -10,24 +11,16 @@
         .ToList();
 }
 
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["Error"]
-    </div>
-}
 
-
-<section id="detalle" class="container py-5 mt-5 text-white">
+<section id="detalle" class="container py-5 mt-5 text-white min-vh-100">
     <div class="d-flex flex-column flex-md-row justify-content-start gap-5">
         <div class="d-flex flex-column justify-content-start">
             <h3 class="text-uppercase fw-bold">@pelicula.Titulo</h3>
 
-       <div class="my-4 w-100 w-md-300px" style="max-width: 100%;">
-            <img src="@pelicula.Imagen"
-                 class="w-100 rounded-4"
-                 style="height: 600px; object-fit: cover;"
-                 alt="Imagen de @pelicula.Titulo" />
+       <div class="my-4 w-100">
+         <img src="@pelicula.Imagen"
+             class="w-100 rounded-4 h-300 h-lg-400"
+             alt="Imagen de @pelicula.Titulo" />
         </div>
 
 
@@ -71,7 +64,7 @@
                                     .GroupBy(f => f.Sala.Numero)
                                     .OrderBy(g => g.Key);
                             }
-
+                            
                             @foreach (var grupoSala in funcionesPorSala)
                             {
                                 <div class="mb-2">
@@ -79,27 +72,54 @@
                                     <div class="d-flex flex-wrap gap-2">
                                         @foreach (var funcion in grupoSala.OrderBy(f => f.FechaHora))
                                         {
-                                       <button type="button"
-                                            class="bg-secondary bg-opacity-25 px-3 py-2 rounded-3 text-white text-center fw-bold border-0"
-                                            style="min-width: 60px;"
-                                            data-funcion-id="@funcion.Id">
-                                            @funcion.FechaHora.ToString("HH:mm")
-                                    </button>
-
+                                            var asientosOcupados = context.Tickets
+                                                .Where(t => t.FuncionId == funcion.Id)
+                                                .Sum(t => (int?)t.NumeroAsientos) ?? 0;
+    
+                                            var asientosDisponibles = funcion.Sala.Capacidad - asientosOcupados;
+    
+                                            @if (asientosDisponibles > 0)
+                                            {
+                                                <button type="button"
+                                                        class="bg-secondary bg-opacity-25 px-3 py-2 rounded-3 text-white text-center fw-bold border-0 btn-horario"
+                                                        style="min-width: 60px;"
+                                                        data-funcion-id="@funcion.Id"
+                                                        data-asientos-disponibles="@asientosDisponibles"
+                                                        title="@asientosDisponibles asientos disponibles - @funcion.FechaHora.ToString("HH:mm")">
+                                                    @funcion.FechaHora.ToString("HH:mm")
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <button type="button"
+                                                        class="bg-danger bg-opacity-50 px-3 py-2 rounded-3 text-white-50 text-center fw-bold border-0"
+                                                        style="min-width: 60px; text-decoration: line-through;"
+                                                        disabled
+                                                        title="Agotado">
+                                                    @funcion.FechaHora.ToString("HH:mm")
+                                                </button>
+                                            }
                                         }
                                     </div>
                                 </div>
                             }
+                               
                         </div>
                     }
                 </div>
 
                 <form method="post" asp-controller="Ticket" asp-action="Elegir" class="mt-5">
+                    @if (TempData["Error"] != null)
+                                {
+                                    <div class="alert alert-danger p-2 small mb-2">
+                                        @TempData["Error"]
+                                    </div>
+                                } 
                     <input type="hidden" name="funcionId" id="funcionId" />
-
+                      
                     <div class="mb-3">
                         <label for="cantidad" class="form-label fw-bold">Cantidad de entradas</label>
-                        <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" max="10" value="1" required />
+                        <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" max="100" value="1" required />
                     </div>
 
                     @if (User.Identity.IsAuthenticated)
@@ -129,7 +149,20 @@
     font-weight: bold;
 }
 
-
+.h-300 {
+    height: 300px !important;
+}
+.h-400 {
+    height: 400px !important;
+}
+.h-lg-400 {
+    height: 400px !important;
+}
+@@media (min-width: 992px) {
+    .h-lg-400 {
+        height: 400px !important;
+    }
+}
 </style>
 
 
@@ -139,11 +172,17 @@
         if (!funcionId) {
             e.preventDefault();
             alert("Por favor, seleccioná un horario antes de continuar.");
+            return;
         }
+
+        const selectedButton = document.querySelector(`.btn-horario[data-funcion-id='${funcionId}']`);
+        const asientosDisponibles = parseInt(selectedButton.getAttribute('data-asientos-disponibles'), 10);
+        const cantidadSeleccionada = parseInt(document.getElementById('cantidad').value, 10);
+       
     });
 
         const buttons = document.querySelectorAll("button[data-funcion-id]");
-    buttons.forEach(btn => {
+        buttons.forEach(btn => {
         btn.addEventListener("click", function () {
             buttons.forEach(b => b.classList.remove("selected-funcion"));
 

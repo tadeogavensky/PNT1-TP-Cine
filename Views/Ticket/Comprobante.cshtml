@@ -6,25 +6,30 @@
     var usuario = Model.Usuario;
 }
 
-<section class="container py-5 mt-5 text-white">
-    <h2 class="mb-4 text-uppercase fw-bold">Ticket generado</h2>
+<section class="container py-5 mt-5 text-white vh-100">
+    <h2 class="mb-4 text-uppercase fw-bold text-center">Ticket generado</h2>
 
-    <div class="bg-dark bg-opacity-25 p-4 rounded-4 mb-4">
-        <p><strong>Número de ticket:</strong> @Model.Numero</p>
-        <p><strong>Fecha de compra:</strong> @Model.FechaCompra.ToString("dd/MM/yyyy HH:mm")</p>
+    <!-- Contenedor centrado y más angosto -->
+    <div class="col-md-6 mx-auto">
+        <div class="bg-dark bg-opacity-25 p-4 rounded-4 mb-4 shadow">
+            <p><strong>Número de ticket:</strong> @Model.Numero</p>
+            <p><strong>Fecha de compra:</strong> @Model.FechaCompra.ToString("dd/MM/yyyy HH:mm")</p>
 
-        <hr />
+            <hr />
 
-        <p><strong>Usuario:</strong> @usuario.Nombre @usuario.Apellido (@usuario.Email)</p>
+            <p><strong>Usuario:</strong> @usuario.Nombre @usuario.Apellido (@usuario.Email)</p>
 
-        <hr />
+            <hr />
 
-        <p><strong>Película:</strong> @pelicula.Titulo</p>
-        <p><strong>Fecha y hora:</strong> @funcion.FechaHora.ToString("dddd dd/MM/yyyy HH:mm", new System.Globalization.CultureInfo("es-AR"))</p>
-        <p><strong>Sala:</strong> @sala.Numero</p>
-        <p><strong>Entradas:</strong> @Model.NumeroAsientos</p>
-        <p><strong>Total pagado:</strong> $@Model.Precio</p>
+            <p><strong>Película:</strong> @pelicula.Titulo</p>
+            <p><strong>Fecha y hora:</strong> @funcion.FechaHora.ToString("dddd dd/MM/yyyy HH:mm", new System.Globalization.CultureInfo("es-AR"))</p>
+            <p><strong>Sala:</strong> @sala.Numero</p>
+            <p><strong>Entradas:</strong> @Model.NumeroAsientos</p>
+            <p><strong>Total pagado:</strong> $@Model.Precio</p>
+        </div>
     </div>
 
-    <a href="@Url.Action("Index", "Home")" class="btn btn-primary text-uppercase fw-bold">Volver al inicio</a>
+    <div class="text-center">
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary text-uppercase fw-bold">Volver al inicio</a>
+    </div>
 </section>

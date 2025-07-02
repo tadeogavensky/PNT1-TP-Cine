@@ -1,13 +1,39 @@
-﻿<section class="container py-5 mt-5 text-white text-center">
+﻿@model PNT1_TP_Cine.Models.Ticket
+
+@{
+    var funcion = Model.Funcion;
+    var pelicula = funcion.Pelicula;
+    var sala = funcion.Sala;
+}
+
+<section class="container py-5 mt-5 text-white text-center vh-100">
     <h2 class="mb-4 text-uppercase fw-bold">🎉 ¡Compra exitosa!</h2>
     <p class="fs-5">Tu ticket fue generado correctamente.</p>
 
+    <!-- Contenedor flexible con info a la izquierda e imagen a la derecha -->
+    <div class="d-flex justify-content-center align-items-stretch gap-4 mt-4 flex-wrap flex-md-nowrap">
 
-    <a href="@Url.Action("Comprobante", "Ticket", new { id = ViewBag.TicketId ?? 0 })"
-       class="btn btn-outline-light text-uppercase fw-bold mt-3">Ver comprobante</a>
-    <a href="@Url.Action("Index", "Home")"
-       class="btn btn-primary text-uppercase fw-bold mt-3 ms-3">Volver al inicio</a>
+        <!-- Información de la función -->
+        <div class="bg-dark bg-opacity-25 p-4 rounded-4 text-start">
+            <p><strong>Película:</strong> @pelicula.Titulo</p>
+            <p><strong>Fecha y hora:</strong> @funcion.FechaHora.ToString("dddd dd/MM/yyyy HH:mm", new System.Globalization.CultureInfo("es-AR"))</p>
+            <p><strong>Sala:</strong> @sala.Numero</p>
+            <p><strong>Entradas:</strong> @Model.NumeroAsientos</p>
+            <p><strong>Total pagado:</strong> $@Model.Precio</p>
+        </div>
 
+        <!-- Imagen a la derecha, mismo alto que el bloque de info -->
+        <div style="max-width: 200px;" class="rounded-3 overflow-hidden border border-light">
+            <img src="@pelicula.Imagen"
+                 alt="Imagen de la película @pelicula.Titulo"
+                 style="height: 100%; width: 100%; object-fit: cover;" />
+        </div>
+    </div>
 
-
+    <div class="mt-4">
+        <a href="@Url.Action("Comprobante", "Ticket", new { id = Model.Id })"
+           class="btn btn-outline-light text-uppercase fw-bold mt-3">Ver comprobante</a>
+        <a href="@Url.Action("Index", "Home")"
+           class="btn btn-primary text-uppercase fw-bold mt-3 ms-3">Volver al inicio</a>
+    </div>
 </section>

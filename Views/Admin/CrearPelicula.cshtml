@@ -1,0 +1,66 @@
+﻿@model PNT1_TP_Cine.Models.Pelicula
+
+@{
+    ViewData["Title"] = "Agregar Nueva Película";
+}
+
+<div class="container py-5 text-white my-5">
+    <h2>@ViewData["Title"]</h2>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <form asp-action="CrearPelicula" method="post" class="mt-4">
+        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+        <div class="form-group mb-3">
+            <label asp-for="Titulo" class="form-label"></label>
+            <input asp-for="Titulo" class="form-control" />
+            <span asp-validation-for="Titulo" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Sinopsis" class="form-label"></label>
+            <textarea asp-for="Sinopsis" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="Sinopsis" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Duracion" class="form-label"></label>
+            <input asp-for="Duracion" class="form-control" />
+            <span asp-validation-for="Duracion" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="FechaEstreno" class="form-label"></label>
+            <input asp-for="FechaEstreno" type="date" class="form-control" />
+            <span asp-validation-for="FechaEstreno" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Imagen" class="form-label"></label>
+            <input asp-for="Imagen" class="form-control" placeholder="URL de la imagen" />
+            <span asp-validation-for="Imagen" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-4">
+            <label asp-for="GeneroId" class="form-label"></label>
+            <select asp-for="GeneroId" class="form-control" asp-items="ViewBag.Generos"></select>
+            <span asp-validation-for="GeneroId" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Agregar Película</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
