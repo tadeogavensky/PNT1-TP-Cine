@@ -7,10 +7,12 @@
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
 </head>
 <body style="font-family: 'Roboto', serif;">
-    <header class="bg-black text-white border-bottom border-warning position-fixed z-3 vw-100 mb-5 top-0">
+    <header class="bg-black text-white border-bottom border-white py-3 position-fixed z-3 vw-100 top-0 w-100">
         <div class="container d-flex justify-content-between align-items-center">
             <a class="text-center py-3 text-white text-decoration-none me-md-0 me-3" href="/">
                 <img src="https://external.globalcomixdev.com/img/processed/hero-card-3-2/4d492c1f9b552ee68f5e3819696a4b1f/389_f51453e8049f445a116b6c02fb21638e_large.jpg" alt="Cine Ateneo" style="height: 50px;">
@@ -19,11 +21,10 @@
             @{
                 var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
                 var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
-                 // Obtener el returnUrl de tres posibles fuentes:
-                    var returnUrl = Context.Request.Query["returnUrl"].ToString();
+                var returnUrl = Context.Request.Query["returnUrl"].ToString();
             }
 
-            <nav class="d-flex gap-4 text-uppercase fw-bold d-none d-md-flex fs-4">
+            <nav class="d-none d-lg-flex gap-4 text-uppercase fw-bold fs-4">
                 <a href="@Url.Action("Index", "Peliculas")"
                    class="fs-6 text-white text-decoration-none @(currentController == "Peliculas" ? "border-bottom border-warning" : "")">
                     Películas
@@ -36,34 +37,24 @@
                    class="fs-6 text-white text-decoration-none @(currentController == "Home" && currentAction == "Nosotros" ? "border-bottom border-warning" : "")">
                     Nosotros
                 </a>
-                
-                   @if (User.IsInRole("Admin")) // Solo lo ve el admin
-                    {
-                        <a href="@Url.Action("Index", "Admin")"
+                @if (User.IsInRole("Admin"))
+                {
+                    <a href="@Url.Action("Index", "Admin")"
                        class="fs-6 text-white text-decoration-none @(currentController == "Admin" && currentAction == "Index" ? "border-bottom border-warning pb-1" : "")">
-                         Acceso Admin
-                        </a>
-                    }
-                
+                        Acceso Admin
+                    </a>
+                }
             </nav>
-
-            @using Microsoft.AspNetCore.Http
 
             @if (User.Identity.IsAuthenticated)
             {
-                <div class="d-flex gap-2 position-relative align-items-center align-content-end">
-                    <span class="text-white me-2 fw-bold">
-                        @{
-                            var nombre = User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value;
-                        }
-                        <span class="text-white me-2 fw-bold">
-                            Bienvenido/a, @nombre
-                        </span>
-
-                    </span>
+                <div class="d-none d-lg-flex gap-2 align-items-center">
+                    @{
+                        var nombre = User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value;
+                    }
+                    <span class="text-white fw-bold">Bienvenido/a, @nombre</span>
                     <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
-                       asp-controller="Account"
-                       asp-action="Logout"
+                       asp-controller="Account" asp-action="Logout"
                        asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">
                         Cerrar sesión
                     </a>
@@ -71,24 +62,86 @@
             }
             else
             {
-                <div class="d-flex flex-column flex-md-row gap-2 gap-md-3 position-relative
-                mt-3 mt-md-4 mb-4 mb-md-3 px-3 px-md-0">
+                <div class="d-none d-lg-flex gap-2 align-items-center">
                     <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
-                       asp-controller="Account" asp-action="Login" asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">Iniciar sesión</a>
-
-                 <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
-                    asp-controller="Account" asp-action="Register">Registrarse</a>
+                       asp-controller="Account" asp-action="Login"
+                       asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">
+                        Iniciar sesión
+                    </a>
+                    <a class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold text-uppercase shadow-sm"
+                       asp-controller="Account" asp-action="Register">
+                        Registrarse
+                    </a>
                 </div>
             }
 
+            <button class="navbar-toggler d-lg-none border-0" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#mobileNavbar"
+                    aria-controls="mobileNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="bi bi-list text-white fs-1"></i>
+            </button>
+        </div>
+
+        <div class="collapse position-absolute top-100 bg-black w-100 px-4 py-3 d-lg-none" id="mobileNavbar">
+            <nav class="d-flex flex-column gap-3 text-uppercase fw-bold fs-6">
+                <a href="@Url.Action("Index", "Peliculas")"
+                   class="text-white text-decoration-none @(currentController == "Peliculas" ? "fw-bold" : "")">
+                    Películas
+                </a>
+                <a href="@Url.Action("Promociones", "Home")"
+                   class="text-white text-decoration-none @(currentController == "Promociones" ? "fw-bold" : "")">
+                    Promociones
+                </a>
+                <a href="@Url.Action("Nosotros", "Home")"
+                   class="text-white text-decoration-none @(currentController == "Nosotros" ? "fw-bold" : "")">
+                    Nosotros
+                </a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a href="@Url.Action("Index", "Admin")"
+                       class="text-white text-decoration-none @(currentController == "Admin" && currentAction == "Index" ? "fw-bold" : "")">
+                        Acceso Admin
+                    </a>
+                }
+
+                <hr class="border-white my-2" />
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <span class="text-white fw-bold">
+                        @{
+                            var nombre = User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value;
+                        }
+                        Bienvenido/a, @nombre
+                    </span>
+                    <a class="btn btn-outline-light rounded-pill px-3 py-2 fw-bold text-uppercase shadow-sm w-100"
+                       asp-controller="Account" asp-action="Logout"
+                       asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">
+                        Cerrar sesión
+                    </a>
+                }
+                else
+                {
+                    <a class="btn btn-outline-light rounded-pill px-3 py-2 fw-bold text-uppercase shadow-sm w-100"
+                       asp-controller="Account" asp-action="Login"
+                       asp-route-returnUrl="@($"{Context.Request.Path}{Context.Request.QueryString}")">
+                        Iniciar sesión
+                    </a>
+                    <a class="btn btn-outline-light rounded-pill px-3 py-2 fw-bold text-uppercase shadow-sm w-100"
+                       asp-controller="Account" asp-action="Register">
+                        Registrarse
+                    </a>
+                }
+            </nav>
         </div>
     </header>
+  
 
     <main role="main" class="py-5 mx-auto bg-black">
         @RenderBody()
     </main>
 
-    <footer class="bg-black text-white pt-3 pb-3 border-top border-warning fixed-bottom">
+    <footer class="bg-black text-white pt-3 pb-3 border-top border-white">
         <div class="container">
             <div class="d-flex justify-content-between flex-wrap small">
                 <div>
@@ -114,17 +167,23 @@
     @await RenderSectionAsync("Scripts", required: false)
 
     <style>
-        html, body {
+        body {
             margin: 0;
             padding: 0;
-            height: 100%; 
-            background-color: black; 
         }
 
         a {
             text-decoration: none;
             color: lightgray;
             font-size: small;
+        }
+
+        #home{
+            margin-top: 120px;
+        }
+    
+        main{
+            min-height: calc(100vh - 120px);
         }
 
         .nav-link.active {
