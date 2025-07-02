@@ -110,7 +110,7 @@ namespace PNT1_TP_Cine.Controllers
             {
                 context.Peliculas.Add(pelicula);
                 context.SaveChanges();
-                TempData["Succes"] = "Película creada exitosamente.";
+                TempData["Success"] = "Película creada exitosamente.";
                 return RedirectToAction("Index");
             }
 
