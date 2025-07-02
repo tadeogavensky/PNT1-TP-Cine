@@ -41,3 +41,6 @@ artifacts/
 
 # Excluir el archivo de contexto de Entity Framework
 Models/Context.cs
+
+ANALISIS_PROYECTO.md
+ANALISIS_PROYECTO.txt

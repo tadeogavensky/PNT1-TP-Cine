@@ -99,23 +99,24 @@
                                                     @funcion.FechaHora.ToString("HH:mm")
                                                 </button>
                                             }
-                                            @if (TempData["Error"] != null)
-                                            {
-                                                <div class="alert alert-danger p-2 small mb-2">
-                                                    @TempData["Error"]
-                                                </div>
-                                            }
                                         }
                                     </div>
                                 </div>
                             }
+                               
                         </div>
                     }
                 </div>
 
                 <form method="post" asp-controller="Ticket" asp-action="Elegir" class="mt-5">
+                    @if (TempData["Error"] != null)
+                                {
+                                    <div class="alert alert-danger p-2 small mb-2">
+                                        @TempData["Error"]
+                                    </div>
+                                } 
                     <input type="hidden" name="funcionId" id="funcionId" />
-
+                      
                     <div class="mb-3">
                         <label for="cantidad" class="form-label fw-bold">Cantidad de entradas</label>
                         <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" max="100" value="1" required />
