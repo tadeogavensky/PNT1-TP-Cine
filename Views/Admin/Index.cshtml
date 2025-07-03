@@ -67,9 +67,9 @@
                     <thead>
                         <tr>
                             <th>Título</th>
-                            <th>Duración</th>
-                            <th>Fecha de Estreno</th>
-                            <th>Genero</th>
+                            <th class="d-none d-md-table-cell">Duración</th>
+                            <th class="d-none d-md-table-cell">Fecha de Estreno</th>
+                            <th class="d-none d-md-table-cell">Genero</th>
                             <th>Imagen Promocional</th>
                             <th>Acciones</th>
                         </tr>
@@ -79,10 +79,10 @@
                         {
                             <tr style="vertical-align:middle;">
                                 <td>@p.Titulo</td>
-                                <td>@p.Duracion min</td>
-                                <td>@p.FechaEstreno.ToShortDateString()</td>
-                                <td>@p.Genero.Nombre</td>
-                                <td><img src="@p.Imagen" width="200" /></td>
+                                <td class="d-none d-md-table-cell">@p.Duracion min</td>
+                                <td class="d-none d-md-table-cell">@p.FechaEstreno.ToShortDateString()</td>
+                                <td class="d-none d-md-table-cell">@p.Genero.Nombre</td>
+                                <td><img src="@p.Imagen" class="img-fluid" style="max-width: 100px; width="200" /></td>
                                 <td>
                                     <button type="button" class="btn btn-danger btn-sm"
                                             data-bs-toggle="modal"
@@ -154,11 +154,11 @@
                 <table class="table table-striped table-dark">
                     <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
+                            <th class="d-none d-md-table-cell">Nombre</th>
+                            <th class="d-none d-md-table-cell">Apellido</th>
                             <th>Email</th>
                             <th>Rol</th>
-                            <th>Actualizar</th>
+                            <th class="d-none d-md-table-cell">Actualizar</th>
                             <th>Eliminar</th>
                         </tr>
                     </thead>
@@ -168,8 +168,8 @@
                         {
                             var isAdmin = u.Rol.Nombre == "Admin";
                             <tr>
-                                <td class="@(isAdmin ? "text-danger" : "")">@u.Nombre</td>
-                                <td class="@(isAdmin ? "text-danger" : "")">@u.Apellido</td>
+                                <td class="@(isAdmin ? "text-danger" : "") d-none d-md-table-cell">@u.Nombre</td>
+                                <td class="@(isAdmin ? "text-danger" : "") d-none d-md-table-cell">@u.Apellido</td>
                                 <td class="@(isAdmin ? "text-danger" : "")">@u.Email</td>
                                 <td class="@(isAdmin ? "text-danger" : "")">
                                     <select onchange="updateRole('@u.Id', this.value)" class="form-select form-select-sm">
@@ -186,7 +186,7 @@
                                         }
                                     </select>
                                 </td>
-                                <td>
+                                <td class="d-none d-md-table-cell">
                                     <button type="button" class="btn btn-warning btn-sm d-flex justify-content-center align-items-center"
                                             data-bs-toggle="modal"
                                             data-bs-target="#confirmarActualizarFuncionModal"
@@ -195,7 +195,8 @@
                                         Reset
                                     </button>
                                 </td>
-                                @if (!isAdmin) {
+                                @if (!isAdmin) 
+                                {
                                 <td>
                                     <button type="button" class="btn btn-danger btn-sm d-flex justify-content-center align-items-center"
                                             data-bs-toggle="modal"
