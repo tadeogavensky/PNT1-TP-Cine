@@ -3,9 +3,10 @@
     var returnUrl = Context.Request.Query["returnUrl"].ToString();
 }
 
-<div class="container vh-100 d-flex flex-column align-items-center justify-content-center w-100">
-    <div class="row justify-content-center w-100">
-        <div class="col-12 col-sm-10 col-md-8 col-lg-5 bg-dark p-4 rounded shadow-sm mt-5 w-100">
+<div class="container-fluid d-flex flex-column px-0">
+    <div class="row justify-content-center mx-0 pt-5">
+        <div class="col-11 col-sm-8 col-md-6 col-lg-4 col-xl-3 p-0">
+            <div class="bg-dark p-4 rounded shadow-sm mb-5">
             <h2 class="mb-4 text-white text-center">Iniciar sesión</h2>
 
             @if (TempData["RegistroExitoso"] != null)
@@ -37,4 +38,5 @@
             </form>
         </div>
     </div>
+</div>
 </div>

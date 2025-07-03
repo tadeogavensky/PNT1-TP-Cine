@@ -14,13 +14,14 @@
 
 <section id="detalle" class="container py-5 mt-5 text-white min-vh-100">
     <div class="d-flex flex-column flex-md-row justify-content-start gap-5">
-        <div class="d-flex flex-column justify-content-start">
-            <h3 class="text-uppercase fw-bold">@pelicula.Titulo</h3>
+        <div class="d-flex flex-column justify-content-start" style="max-width: 500px;"> 
+            <h3 class="text-uppercase fw-bold w-100 w-md-auto">@pelicula.Titulo</h3>
 
-       <div class="my-4 w-100">
+       <div class="my-4 w-100" style="max-width: 500px;">
          <img src="@pelicula.Imagen"
-             class="w-100 rounded-4 h-300 h-lg-400"
-             alt="Imagen de @pelicula.Titulo" />
+         class="rounded-4 w-100 w-md-auto" 
+         style="max-width: 500px; height: 300px; object-fit: contain;"
+         alt="Imagen de @pelicula.Titulo" />
         </div>
 
 

@@ -4,7 +4,7 @@
 }
 
 
-<section id="home" class="container py-5 my-5 text-white">
+<section id="home" class="container-fluid py-4 px-md-5 text-white">
     <h2 class="mb-4">@ViewData["Title"]</h2>
     <ul class="nav nav-tabs" id="cineTabs" role="tablist">
         <li class="nav-item"><button class="nav-link show active" data-bs-toggle="tab" data-bs-target="#funciones">Funciones</button></li>
@@ -15,8 +15,12 @@
 
     <div class="tab-content mt-3">
         <!-- Funciones -->
+        
         <div class="tab-pane fade show active" id="funciones">
-            <h3>Funciones</h3>
+            <h3 style="display: inline-block; margin-right: 1rem;">Funciones</h3>
+            <div class="d-flex justify-content-end " style="display: inline-block;">
+                <a asp-action="CrearFuncion" class="btn btn-success btn-sm" style="width: 150px; margin-bottom:10px; margin-right: 3px">Crear</a>
+            </div>
             <div class="table-responsive">
                 <table class="table table-dark">
                     <thead>
@@ -48,15 +52,16 @@
                         }
                     </tbody>
                 </table>
-                <div class="d-flex justify-content-end">
-                    <a asp-action="CrearFuncion" class="btn btn-success btn-sm" style="width: 150px; margin-bottom:10px; margin-right: 3px">Crear</a>
-                </div>
+                
             </div>
         </div>
 
         <!-- Películas -->
         <div class="tab-pane fade" id="peliculas">
-            <h3>Películas</h3>
+            <h3 style="display: inline-block; margin-right: 1rem;">Películas</h3>
+            <div class="d-flex justify-content-end " style="display: inline-block;">
+                <a asp-action="CrearPelicula" class="btn btn-success btn-sm" style="width: 150px; margin-bottom:10px; margin-right: 3px">Crear</a>
+            </div>
             <div class="table-responsive">
                 <table class="table table-striped table-dark">
                     <thead>
@@ -91,15 +96,15 @@
                         }
                     </tbody>
                 </table>
-                <div class="d-flex justify-content-end">
-                    <a asp-action="CrearPelicula" class="btn btn-success btn-sm" style="width: 150px; margin-bottom:10px; margin-right: 3px">Crear</a>
-                </div>
             </div>
         </div>
 
         <!-- Salas -->
         <div class="tab-pane fade" id="salas">
-            <h3>Salas</h3>
+            <h3 style="display: inline-block; margin-right: 1rem;">Salas</h3>
+            <div class="d-flex justify-content-end " style="display: inline-block;">
+                <a asp-action="CrearSala" class="btn btn-success btn-sm" style="width: 150px; margin-bottom:10px; margin-right: 3px">Crear</a>
+            </div>
             <div class="table-responsive">
                 <table class="table table-striped table-dark">
                     <thead>
@@ -133,15 +138,18 @@
                         }
                     </tbody>
                 </table>
-                <div class="d-flex justify-content-end">
-                    <a asp-action="CrearSala" class="btn btn-success btn-sm" style="width: 150px; margin-bottom:10px; margin-right: 3px">Crear</a>
-                </div>
             </div>
         </div>
 
         <!-- Usuarios -->
         <div class="tab-pane fade" id="usuarios">
-            <h3>Usuarios</h3>
+            <h3 style="display: inline-block; margin-right: 1rem;">Usuarios</h3>
+            <div class="d-flex justify-content-end">
+                <a asp-controller="Admin" asp-action="CrearUsuario"
+                   class="btn btn-success btn-sm" style="width: 150px; margin-bottom:10px; margin-right: 3px">
+                    Crear Usuario
+                </a>
+            </div>
             <div class="table-responsive">
                 <table class="table table-striped table-dark">
                     <thead>
@@ -206,12 +214,6 @@
                         }
                     </tbody>
                 </table>
-                <div class="d-flex justify-content-end">
-                    <a asp-controller="Admin" asp-action="CrearUsuario"
-                       class="btn btn-success btn-sm" style="width: 150px; margin-bottom:10px; margin-right: 3px">
-                        Crear Usuario
-                    </a>
-                </div>
             </div>
         </div>
     </div>

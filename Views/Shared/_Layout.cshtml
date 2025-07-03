@@ -137,7 +137,7 @@
     </header>
   
 
-    <main role="main" class="py-5 mx-auto bg-black">
+    <main role="main" class="flex-grow-1 bg-black">
         @RenderBody()
     </main>
 
@@ -167,23 +167,24 @@
     @await RenderSectionAsync("Scripts", required: false)
 
     <style>
-        body {
+        html, body {
+            height: 100%;
             margin: 0;
             padding: 0;
+            display: flex; /* Nuevo: Flexbox para estructura */
+            flex-direction: column; /* Apila elementos verticalmente */
         }
 
-        a {
-            text-decoration: none;
-            color: lightgray;
-            font-size: small;
+        /* Elimina esta clase redundante (o reemplázala) */
+        .main-full-viewport {
+            min-height: 100vh; /* ¡Conflicto con main! */
+            width: 100%;
         }
 
-        #home{
-            margin-top: 120px;
-        }
-    
-        main{
-            min-height: calc(100vh - 120px);
+        main {
+            flex: 1; /* Ocupa todo el espacio restante */
+            padding-top: 120px; /* Reemplaza margin-top de #home */
+            background-color: black; /* Fondo para todo el main */
         }
 
         .nav-link.active {
